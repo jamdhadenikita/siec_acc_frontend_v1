@@ -1,761 +1,2200 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<link rel="icon" href="data:,">
-<meta charset="UTF-8" />
-<link rel="apple-touch-icon" sizes="180x180" href="/favicon_io/apple-touch-icon.png">
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon_io/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="/favicon_io/favicon-16x16.png">
-<link rel="manifest" href="/favicon_io/site.webmanifest">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
-<title>Vendor Payments — Aquilon ERP</title>
+  <link rel="icon" href="data:,">
+  <meta charset="UTF-8" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon_io/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon_io/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon_io/favicon-16x16.png">
+  <link rel="manifest" href="/favicon_io/site.webmanifest">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <title>Vendors / Suppliers — Aquilon ERP</title>
 
-<script>
-(function () {
-  try {
-    var c = localStorage.getItem("sidebarCollapsed") === "true";
-    document.documentElement.classList.add(c ? "sidebar-collapsed" : "sidebar-expanded");
-  } catch (e) { document.documentElement.classList.add("sidebar-expanded"); }
-})();
-</script>
+  <!-- ANTI-FLICKER SCRIPT -->
+  <script>
+    (function () {
+      try {
+        var collapsed = localStorage.getItem("sidebarCollapsed") === "true";
+        document.documentElement.classList.add(collapsed ? "sidebar-collapsed" : "sidebar-expanded");
+      } catch (e) {
+        document.documentElement.classList.add("sidebar-expanded");
+      }
+    })();
+  </script>
 
-<script src="https://cdn.tailwindcss.com"></script>
-<script>
-tailwind.config = { theme: { extend: { colors: {
-  primary: { DEFAULT: "#6da84c", dark: "#5c9140", soft: "#eef5e8" },
-  secondary: { DEFAULT: "#1985bf", soft: "#e7f3fa" } } } } };
-</script>
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: { DEFAULT: "#6da84c", dark: "#5c9140", soft: "#eef5e8" },
+            secondary: { DEFAULT: "#1985bf", soft: "#e7f3fa" },
+          },
+        },
+      },
+    };
+  </script>
 
-<link rel="stylesheet" href="/assets/css/nav-sidebar.css" />
+  <!-- Shell styling -->
+  <link rel="stylesheet" href="/assets/css/nav-sidebar.css" />
 
-<style>
-.form-input{width:100%;border:1px solid #e5e7eb;border-radius:8px;padding:8px 12px;font-size:13px;outline:none;transition:border-color .2s,box-shadow .2s;background:#fafafa;color:#1a1a2e}
-.form-input:focus{border-color:#6da84c;box-shadow:0 0 0 3px rgba(109,168,76,.15);background:#fff}
-.form-input:disabled{background:#f3f4f6;cursor:not-allowed}
-.form-label{font-size:11.5px;font-weight:600;color:#374151;display:block;margin-bottom:4px}
-.form-hint{font-size:10.5px;color:#9ca3af;margin-top:3px}
-.badge{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px}
-.badge-green{background:#dcfce7;color:#166534}.badge-amber{background:#fef3c7;color:#92400e}.badge-red{background:#fee2e2;color:#991b1b}
-.badge-gray{background:#f1f5f9;color:#475569}.badge-blue{background:#dbeafe;color:#1e40af}.badge-purple{background:#ede9fe;color:#5b21b6}
-.badge-dot{width:6px;height:6px;border-radius:50%;display:inline-block}
-.badge-dot-green{background:#22c55e}.badge-dot-amber{background:#f59e0b}.badge-dot-red{background:#ef4444}
-.badge-dot-gray{background:#94a3b8}.badge-dot-blue{background:#3b82f6}
-.stat-card{border:1px solid #7dc057;transition:transform .15s,box-shadow .15s;height:70px}
-.stat-card:hover{transform:translateY(-2px);box-shadow:0 4px 20px rgba(0,0,0,.06)}
-.stat-icon-wrap{width:36px;height:36px;border-radius:10px;border:1px solid #6da84c;display:inline-flex;align-items:center;justify-content:center;font-size:15px}
-.table-row-hover:hover{background:#f8fafc}
-@keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
-@keyframes modalIn{from{opacity:0;transform:scale(.96) translateY(6px)}to{opacity:1;transform:scale(1) translateY(0)}}
-.animate-modal{animation:modalIn .18s ease}
-.btn-icon-action{transition:all .15s;width:32px;height:32px;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;color:#94a3b8;background:transparent;border:1px solid gray;cursor:pointer}
-.btn-icon-action:hover{background:#f1f5f9;color:#6da84c}
-.btn-icon-action.danger:hover{background:#fee2e2;color:#ef4444}
-.toast{animation:fadeIn .2s ease}
-.modal-scroll{max-height:60vh;overflow-y:auto}
-.modal-scroll::-webkit-scrollbar{width:4px}.modal-scroll::-webkit-scrollbar-thumb{background:#d1d5db;border-radius:4px}
-.empty-icon-svg{opacity:.2;width:48px;height:48px;color:#94a3b8}
-.receipt-preview{background:#fff;border:1px solid #6da84c;border-radius:12px;padding:24px 28px;max-width:720px;margin:0 auto}
-.receipt-header{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:2px solid #6da84c;padding-bottom:12px;margin-bottom:14px}
-.receipt-title{font-size:20px;font-weight:700;color:#6da84c;letter-spacing:.04em}
-.receipt-company-name{font-size:16px;font-weight:700;color:#1a1a2e}
-.receipt-company-details{font-size:11.5px;color:#6b7280;line-height:1.5;margin-top:2px}
-.receipt-meta{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;font-size:13px}
-.meta-label{font-weight:700;color:#6b7280;font-size:10.5px;text-transform:uppercase;letter-spacing:.04em}
-.meta-value{font-weight:600;color:#1a1a2e}
-.receipt-table{width:100%;border-collapse:collapse;margin:10px 0;font-size:13px}
-.receipt-table th{background:#f8fafc;text-align:left;padding:8px 10px;font-size:10.5px;font-weight:700;text-transform:uppercase;color:#6b7280;border-bottom:2px solid #e5e7eb}
-.receipt-table td{padding:8px 10px;border-bottom:1px solid #f1f5f9}
-.receipt-total{margin-top:10px;border-top:2px solid #6da84c;padding-top:10px;text-align:right;font-size:15px;font-weight:700;color:#6da84c}
-.receipt-footer{margin-top:16px;font-size:11px;color:#6b7280;border-top:1px solid #e5e7eb;padding-top:10px;text-align:center}
-@media print{body *{visibility:hidden!important}.receipt-preview,.receipt-preview *{visibility:visible!important}.receipt-preview{position:absolute;left:0;top:0;width:100%;border:none;max-width:none}}
-</style>
+  <!-- Page-specific styles -->
+  <style>
+    /* Form styles */
+    .form-input {
+      width: 100%;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      padding: 8px 12px;
+      font-size: 13px;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      background: #fafafa;
+      color: #1a1a2e;
+    }
+
+    .form-input:focus {
+      border-color: #6da84c;
+      box-shadow: 0 0 0 3px rgba(109, 168, 76, 0.15);
+      background: #ffffff;
+    }
+
+    .form-input:disabled {
+      background: #f3f4f6;
+      cursor: not-allowed;
+    }
+
+    .form-label {
+      font-size: 11.5px;
+      font-weight: 600;
+      color: #374151;
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .form-label .required {
+      color: #ef4444;
+      margin-left: 2px;
+    }
+
+    .form-hint {
+      font-size: 10.5px;
+      color: #9ca3af;
+      margin-top: 3px;
+    }
+
+    /* Badge */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 20px;
+    }
+
+    .badge-green {
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    .badge-amber {
+      background: #fef3c7;
+      color: #92400e;
+    }
+
+    .badge-red {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    .badge-gray {
+      background: #f1f5f9;
+      color: #475569;
+    }
+
+    .badge-blue {
+      background: #dbeafe;
+      color: #1e40af;
+    }
+
+    .badge-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    .badge-dot-green {
+      background: #22c55e;
+    }
+
+    .badge-dot-amber {
+      background: #f59e0b;
+    }
+
+    .badge-dot-red {
+      background: #ef4444;
+    }
+
+    .badge-dot-gray {
+      background: #94a3b8;
+    }
+
+    .badge-dot-blue {
+      background: #3b82f6;
+    }
+
+    /* Stats card */
+    /* Stats card */
+    .stat-card {
+      border: 1px solid #7dc057;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+      height: 70px;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+    }
+
+    .stat-icon-wrap {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      border: 1px solid #6da84c;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+    }
+
+    /* Table row hover */
+    .table-row-hover:hover {
+      background: #f8fafc;
+    }
+
+    /* Modal tabs */
+    .modal-tab-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+      padding: 8px 14px;
+      font-size: 12px;
+      font-weight: 500;
+      border-bottom: 2px solid transparent;
+      color: #6b7280;
+      cursor: pointer;
+      background: transparent;
+    }
+
+
+    .modal-tab-btn.active {
+      color: #6da84c;
+      border-bottom-color: #6da84c;
+    }
+
+    .modal-tab-btn:hover:not(.active) {
+      color: #1f2937;
+      border-bottom-color: #d1d5db;
+    }
+
+    .modal-tab-panel {
+      display: none;
+    }
+
+    .modal-tab-panel.active {
+      display: block;
+      animation: fadeIn 0.25s ease;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(4px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes modalIn {
+      from {
+        opacity: 0;
+        transform: scale(0.96) translateY(6px);
+      }
+
+      to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+      }
+    }
+
+    .animate-modal {
+      animation: modalIn 0.18s ease;
+    }
+
+    /* Action buttons */
+    .btn-icon-action {
+      transition: all 0.15s ease;
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: #94a3b8;
+      background: transparent;
+      border: 1px solid gray;
+      cursor: pointer;
+    }
+
+    .btn-icon-action:hover {
+      background: #f1f5f9;
+      color: #6da84c;
+    }
+
+    .btn-icon-action.danger:hover {
+      background: #fee2e2;
+      color: #ef4444;
+    }
+
+    /* Toast */
+    .toast {
+      animation: fadeIn 0.2s ease;
+    }
+
+    .toast-success {
+      background: #16a34a;
+    }
+
+    .toast-error {
+      background: #dc2626;
+    }
+
+    .toast-warning {
+      background: #f59e0b;
+    }
+
+    .toast-info {
+      background: #6da84c;
+    }
+
+    /* Scrollbar for modal */
+    .modal-scroll {
+      max-height: 60vh;
+      overflow-y: auto;
+    }
+
+    .modal-scroll::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    .modal-scroll::-webkit-scrollbar-thumb {
+      background: #d1d5db;
+      border-radius: 4px;
+    }
+
+    /* Empty state */
+    .empty-icon-svg {
+      opacity: 0.2;
+      width: 48px;
+      height: 48px;
+      color: #94a3b8;
+    }
+
+    /* Vendor logo placeholder */
+    .vendor-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      font-size: 14px;
+      color: #fff;
+      flex-shrink: 0;
+    }
+
+    /* ---------------- MANAGE VENDOR CATEGORIES OVERLAY (new) ---------------- */
+    .cat-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      border: 1px solid #f1f5f9;
+      border-radius: 10px;
+      margin-bottom: 8px;
+      transition: background .15s ease;
+    }
+
+    .cat-row:hover {
+      background: #fafbfc;
+    }
+
+    .cat-color-dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 5px;
+      flex-shrink: 0;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+    }
+
+    .cat-swatch {
+      width: 24px;
+      height: 24px;
+      border-radius: 7px;
+      cursor: pointer;
+      border: 2px solid transparent;
+      display: inline-flex;
+      transition: all .15s ease;
+    }
+
+    .cat-swatch.selected {
+      border-color: #1a1a2e;
+      transform: scale(1.1);
+    }
+
+    .cat-add-form {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height .25s ease;
+    }
+
+    .cat-add-form.open {
+      max-height: 420px;
+    }
+
+    /* ---------------- BREADCRUMB-STYLE STEP TABS (Basic/Tax/Banking/Payment) ---------------- */
+    .step-tabs-wrap {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      margin-bottom: 16px;
+    }
+
+    .step-tab {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 7px 12px;
+      border-radius: 8px;
+      font-size: 11.5px;
+      font-weight: 600;
+      color: #9ca3af;
+      background: #f8fafc;
+      cursor: pointer;
+      transition: all .18s ease;
+      white-space: nowrap;
+    }
+
+    .step-tab .step-num {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: #e5e7eb;
+      color: #6b7280;
+      font-size: 10px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .step-tab.active {
+      background: #eef5e8;
+      color: #1a1a2e;
+    }
+
+    .step-tab.active .step-num {
+      background: #6da84c;
+      color: #fff;
+    }
+
+    .step-tab.done .step-num {
+      background: #6da84c;
+      color: #fff;
+    }
+
+    .step-tab.done {
+      color: #5c9140;
+    }
+
+    .step-chevron {
+      color: #d1d5db;
+      margin: 0 2px;
+      flex-shrink: 0;
+    }
+
+    /* ---------------- SECONDARY CONTACT BLOCK ---------------- */
+    .secondary-contact-block {
+      border: 1px dashed #e5e7eb;
+      border-radius: 10px;
+      padding: 12px;
+      margin-bottom: 10px;
+      background: #fafbfc;
+      position: relative;
+    }
+
+    .secondary-contact-remove {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+    }
+
+    /* ---------------- DOCUMENTS LIST ---------------- */
+    .doc-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      border: 1px solid #e5e7eb;
+      border-radius: 10px;
+      margin-bottom: 8px;
+    }
+
+    .doc-icon {
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      background: #eef5e8;
+      color: #5c9140;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    /* ---------------- PURCHASE SUMMARY MINI CARDS ---------------- */
+    .report-mini-card {
+      border: 1px solid #7dc057;
+      border-radius: 10px;
+      padding: 12px 14px;
+      background: #fafbfc;
+    }
+
+    .report-mini-label {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+      color: #575b64;
+    }
+
+    .report-mini-value {
+      font-size: 18px;
+      font-weight: 700;
+      color: #1a1a2e;
+      margin-top: 3px;
+    }
+  </style>
 </head>
 
 <body class="bg-gray-50 text-gray-800 antialiased">
-<div class="flex min-h-screen">
-  <div id="sidebar-root"></div>
-  <div class="app-main flex-1 flex flex-col min-w-0">
-    <div id="topbar-root"></div>
-    <main class="p-4 sm:p-6 lg:p-8">
-      <div id="toastWrap" class="fixed bottom-5 right-5 z-[200] flex flex-col gap-2 items-end"></div>
-      <div id="modalRoot"></div>
 
-      <div class="max-w-7xl mx-auto">
-        <div class="flex flex-wrap items-start justify-between gap-4 mb-6">
-          <div>
-            <div class="text-[11px] font-semibold tracking-wide uppercase text-primary">Purchase</div>
-            <h1 class="text-[24px] sm:text-[28px] font-bold tracking-tight text-gray-900">Vendor Payments</h1>
-            <p class="text-[13px] text-gray-500 mt-1">Record vendor payments and allocate them against purchase bills.</p>
-          </div>
-          <div class="flex gap-2.5 flex-wrap">
-            <div class="relative inline-block" data-dd-trigger>
-              <button onclick="toggleFilterDD()" class="inline-flex items-center gap-2 bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 text-[12px] font-semibold px-4 py-2.5 rounded-lg transition whitespace-nowrap">
-                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M7 12h10M11 18h2" /></svg>
-                Filter <span id="filterBadge" class="hidden text-[10px] bg-primary text-white px-1.5 py-0.5 rounded-full">0</span>
+  <div class="flex min-h-screen">
+    <!-- Sidebar gets injected here by nav-sidebar.js -->
+    <div id="sidebar-root"></div>
+
+    <div class="app-main flex-1 flex flex-col min-w-0">
+      <!-- Top bar gets injected here -->
+      <div id="topbar-root"></div>
+
+      <!-- ========================================================== -->
+      <!-- ============= PAGE CONTENT STARTS HERE ==================== -->
+      <!-- ========================================================== -->
+      <main class="p-4 sm:p-6 lg:p-8">
+
+        <!-- Toast Container -->
+        <div id="toastWrap" class="fixed bottom-5 right-5 z-[200] flex flex-col gap-2 items-end"></div>
+
+        <!-- Modal Root -->
+        <div id="modalRoot"></div>
+
+        <div class="max-w-7xl mx-auto">
+
+          <!-- Page Header -->
+          <div class="flex flex-wrap items-start justify-between gap-4 mb-6">
+            <div>
+              <div class="text-[11px] font-semibold tracking-wide uppercase text-primary">Masters</div>
+              <h1 class="text-[24px] sm:text-[28px] font-bold tracking-tight text-gray-900">Vendors / Suppliers</h1>
+              <p class="text-[13px] text-gray-500 mt-1">Supplier master with GST details, payment terms, bank details
+                and transaction history.</p>
+            </div>
+            <div class="flex gap-2.5 flex-wrap">
+              <!-- Filter Button -->
+              <div class="relative inline-block" data-dd-trigger>
+                <button onclick="toggleFilterDD()"
+                  class="inline-flex items-center gap-2 bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 text-[12px] font-semibold px-4 py-2.5 rounded-lg transition whitespace-nowrap">
+                  <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 6h18M7 12h10M11 18h2" />
+                  </svg>
+                  Filter
+                  <span id="filterBadge"
+                    class="hidden text-[10px] bg-primary text-white px-1.5 py-0.5 rounded-full">0</span>
+                </button>
+                <div id="filterDD" data-dd-menu
+                  class="hidden absolute top-full left-0 mt-2 w-64 bg-white border border-gray-200 rounded-xl shadow-lg p-3 z-50">
+                  <div class="mb-3">
+                    <label class="text-[11px] font-semibold text-gray-500 uppercase tracking-wide">Status</label>
+                    <select id="filterStatus" onchange="filterVendors()" class="form-input text-[12px]">
+                      <option value="all">All Status</option>
+                      <option value="active">Active</option>
+                      <option value="inactive">Inactive</option>
+                    </select>
+                  </div>
+                  <div class="mb-3">
+                    <label class="text-[11px] font-semibold text-gray-500 uppercase tracking-wide">GST
+                      Registered</label>
+                    <select id="filterGST" onchange="filterVendors()" class="form-input text-[12px]">
+                      <option value="all">All</option>
+                      <option value="yes">Registered</option>
+                      <option value="no">Unregistered</option>
+                    </select>
+                  </div>
+                  <div class="mb-1">
+                    <label class="text-[11px] font-semibold text-gray-500 uppercase tracking-wide">Vendor Type</label>
+                    <select id="filterVendorType" onchange="filterVendors()" class="form-input text-[12px]">
+                      <option value="all">All Types</option>
+                    </select>
+                  </div>
+                  <button onclick="clearFilters()" class="text-[12px] text-primary font-semibold hover:underline">Clear
+                    Filters</button>
+                </div>
+              </div>
+
+              <!-- Manage Vendor Categories Button (matched to Items page's "Vendor Purchase" button styling/length) -->
+              <button onclick="openVendorCategoryManageOverlay()"
+                class="inline-flex items-center gap-2 bg-white border border-[#6da84c] hover:bg-gray-50 text-gray-700 text-[12px] font-semibold px-4 py-1.5 rounded-lg transition shadow-sm whitespace-nowrap">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path
+                    d="M20.59 13.41L11 3.83A2 2 0 009.59 3.24L3 3v6.59a2 2 0 00.59 1.41l9.58 9.58a2 2 0 002.83 0l4.59-4.59a2 2 0 000-2.83z" />
+                  <circle cx="7.5" cy="7.5" r="1.5" fill="currentColor" stroke="none" />
+                </svg>
+                Categories
               </button>
-              <div id="filterDD" data-dd-menu class="hidden absolute top-full left-0 mt-2 w-64 bg-white border border-gray-200 rounded-xl shadow-lg p-3 z-50">
-                <div class="mb-3">
-                  <label class="text-[11px] font-semibold text-gray-500 uppercase tracking-wide">Payment Mode</label>
-                  <select id="filterMode" onchange="filterPayments()" class="form-input text-[12px]">
-                    <option value="all">All Modes</option><option>Bank Transfer</option><option>NEFT</option><option>RTGS</option><option>UPI</option><option>Cheque</option><option>Cash</option>
-                  </select>
-                </div>
-                <div class="mb-3">
-                  <label class="text-[11px] font-semibold text-gray-500 uppercase tracking-wide">Vendor</label>
-                  <select id="filterVendor" onchange="filterPayments()" class="form-input text-[12px]"><option value="all">All Vendors</option></select>
-                </div>
-                <button onclick="clearFilters()" class="text-[12px] text-primary font-semibold hover:underline">Clear Filters</button>
+
+              <!-- Add Vendor Button -->
+              <button onclick="openAddVendor()"
+                class="inline-flex items-center gap-2 bg-primary hover:bg-primary-dark text-white text-[12px] font-semibold px-4 py-1.5 rounded-lg transition shadow-sm whitespace-nowrap">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <path d="M12 5v14M5 12h14" />
+                </svg>
+                Add Vendor
+              </button>
+            </div>
+          </div>
+
+          <!-- Stats Cards -->
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-3.5 mb-6">
+            <div class="bg-white rounded-xl shadow-sm p-4 stat-card flex items-center gap-3">
+              <div class="stat-icon-wrap bg-primary-soft text-primary"><i class="fa-solid fa-building"></i></div>
+              <div>
+              <div class="text-[10.5px] font-semibold uppercase tracking-wider text-gray-500">Total Vendors</div>
+              <div class="text-[16px] font-bold text-gray-900" id="totalVendors">0</div>
               </div>
             </div>
-            <button onclick="openAddPayment()" class="inline-flex items-center gap-2 bg-primary hover:bg-primary-dark text-white text-[12px] font-semibold px-4 py-1.5 rounded-lg transition shadow-sm whitespace-nowrap">
-              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14" /></svg>
-              Record Payment
+            <div class="bg-white rounded-xl shadow-sm p-4 stat-card flex items-center gap-3">
+              <div class="stat-icon-wrap bg-green-50 text-green-600"><i class="fa-solid fa-circle-check"></i></div>
+              <div>
+              <div class="text-[10.5px] font-semibold uppercase tracking-wider text-gray-500">Active</div>
+              <div class="text-[16px] font-bold text-green-600" id="activeVendors">0</div>
+              </div>
+            </div>
+            <div class="bg-white rounded-xl shadow-sm p-4 stat-card flex items-center gap-3">
+              <div class="stat-icon-wrap bg-secondary-soft text-secondary"><i class="fa-solid fa-file-invoice"></i></div>
+              <div>
+              <div class="text-[10.5px] font-semibold uppercase tracking-wider text-gray-500">GST Registered</div>
+              <div class="text-[16px] font-bold text-blue-600" id="gstVendors">0</div>
+              </div>
+            </div>
+            <div class="bg-white rounded-xl shadow-sm p-4 stat-card flex items-center gap-3">
+              <div class="stat-icon-wrap bg-amber-50 text-amber-600"><i class="fa-solid fa-sack-dollar"></i></div>
+              <div>
+              <div class="text-[10.5px] font-semibold uppercase tracking-wider text-gray-500">Total Payable</div>
+              <div class="text-[16px] font-bold text-amber-600" id="totalPayable">₹0</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Vendors Table Panel -->
+          <div id="vendorsPanel"></div>
+
+        </div>
+      </main>
+      <!-- ========================================================== -->
+      <!-- ============= PAGE CONTENT ENDS HERE ====================== -->
+      <!-- ========================================================== -->
+    </div>
+  </div>
+
+  <!-- ========================================================== -->
+  <!-- SCRIPTS -->
+  <!-- ========================================================== -->
+
+  <!-- Shell JS -->
+  <script src="/assets/js/nav-sidebar.js"></script>
+
+  <!-- Main Vendors JS (all logic) -->
+  <script>
+    // =============================================================
+    // NAV-SIDEBAR INIT
+    // =============================================================
+    NavSidebar.init({
+      basePath: "",
+      activePage: "vendors",
+      pageTitle: "Vendors / Suppliers",
+      user: {
+        name: "Admin",
+        role: "Super Admin",
+        avatarUrl: "",
+      },
+    });
+
+    // =============================================================
+    // VENDORS MODULE — Complete Logic (No Emojis, Only SVG Icons)
+    // =============================================================
+
+    function iconPlus() { return `<i class="fa-solid fa-plus"></i>`; }
+    function iconEdit() { return `<i class="fa-solid fa-pen"></i>`; }
+    function iconTrash() { return `<i class="fa-solid fa-trash"></i>`; }
+    function iconEye() { return `<i class="fa-solid fa-eye"></i>`; }
+    function iconX() { return `<i class="fa-solid fa-xmark"></i>`; }
+    function iconFilter() { return `<i class="fa-solid fa-filter"></i>`; }
+    function iconSave() { return `<i class="fa-solid fa-floppy-disk"></i>`; }
+    function iconInfo() { return `<i class="fa-solid fa-circle-info"></i>`; }
+    function iconUser() { return `<i class="fa-solid fa-user"></i>`; }
+    function iconBuilding() { return `<i class="fa-solid fa-building"></i>`; }
+    function iconGST() { return `<i class="fa-solid fa-shield-halved"></i>`; }
+    function iconBank() { return `<i class="fa-solid fa-building-columns"></i>`; }
+    function iconSearch() { return `<i class="fa-solid fa-magnifying-glass"></i>`; }
+    function iconPhone() { return `<i class="fa-solid fa-phone"></i>`; }
+    function iconMail() { return `<i class="fa-solid fa-envelope"></i>`; }
+    function iconChevronDown() { return `<i class="fa-solid fa-chevron-down"></i>`; }
+    function iconChevronRightSmall() { return `<i class="fa-solid fa-chevron-right step-chevron"></i>`; }
+    function iconCheck() { return `<i class="fa-solid fa-check"></i>`; }
+    function iconTag() { return `<i class="fa-solid fa-tag"></i>`; }
+    function iconUpload() { return `<i class="fa-solid fa-upload"></i>`; }
+    function iconDownload() { return `<i class="fa-solid fa-download"></i>`; }
+    function iconDoc() { return `<i class="fa-solid fa-file-lines"></i>`; }
+    function iconChart() { return `<i class="fa-solid fa-chart-column"></i>`; }
+
+    // ---------- Toast System ----------
+    function showToast(message, kind) {
+      kind = kind || 'success';
+      var wrap = document.getElementById('toastWrap');
+      var colors = {
+        success: 'bg-green-600',
+        info: 'bg-primary',
+        warning: 'bg-amber-600',
+        error: 'bg-red-600'
+      };
+      var el = document.createElement('div');
+      el.className = 'toast ' + colors[kind] + ' text-white text-sm font-semibold px-4 py-3 rounded-lg shadow-lg flex items-center gap-2 max-w-xs';
+      el.innerHTML = '<span>' + message + '</span>';
+      wrap.appendChild(el);
+      setTimeout(function () {
+        el.style.transition = 'opacity .3s';
+        el.style.opacity = '0';
+        setTimeout(function () { el.remove(); }, 300);
+      }, 2600);
+    }
+
+    // ---------- Modal System ----------
+    function openModal(innerHtml, opts) {
+      opts = opts || {};
+      var root = document.getElementById('modalRoot');
+      root.innerHTML = `
+        <div class="fixed inset-0 z-[100] flex items-center justify-center p-4" id="modalOverlay">
+          <div class="absolute inset-0 bg-black/40 backdrop-blur-[2px]" id="modalBackdrop"></div>
+          <div class="relative bg-white rounded-2xl shadow-2xl w-full ${opts.width || 'max-w-3xl'} max-h-[92vh] overflow-hidden animate-modal" ${opts.id ? 'id="' + opts.id + '"' : ''}>
+            ${innerHtml}
+          </div>
+        </div>`;
+      document.getElementById('modalBackdrop').addEventListener('click', closeModal);
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+      var root = document.getElementById('modalRoot');
+      root.innerHTML = '';
+      document.body.style.overflow = '';
+    }
+
+    function modalHeader(title, subtitle) {
+      return `
+        <div class="flex items-start justify-between px-6 py-5 border-b border-gray-100 sticky top-0 bg-white z-10">
+          <div>
+            <h3 class="text-lg font-bold text-gray-900">${title}</h3>
+            ${subtitle ? '<p class="text-xs text-gray-500 mt-0.5">' + subtitle + '</p>' : ''}
+          </div>
+          <button onclick="closeModal()" class="w-8 h-8 rounded-lg hover:bg-gray-100 flex items-center justify-center text-gray-400 hover:text-gray-700 transition">${iconX()}</button>
+        </div>`;
+    }
+
+    function modalFooter(saveLabel, onSaveAttr, extraBtns, danger) {
+      var saveBtnCls = danger ? 'bg-red-600 hover:bg-red-700' : 'bg-primary hover:bg-primary-dark';
+      var saveBtnIcon = danger ? iconTrash() : iconSave();
+      return `
+        <div class="flex items-center justify-between gap-2 px-6 py-2 border-t border-gray-100 bg-gray-50 rounded-b-2xl sticky bottom-0">
+          <div>${extraBtns || ''}</div>
+          <div class="flex gap-2">
+            <button onclick="closeModal()" class="px-4 py-2 rounded-lg text-sm font-semibold text-gray-600 border border-gray-200 hover:bg-white transition">Cancel</button>
+            <button ${onSaveAttr} class="px-4 py-2 rounded-lg text-sm font-semibold text-white ${saveBtnCls} transition shadow-sm flex items-center gap-1.5">
+              ${saveBtnIcon} ${saveLabel}
             </button>
           </div>
+        </div>`;
+    }
+
+    function fld(label, inputHtml, hint) {
+      return `
+        <div class="mb-3">
+          <label class="form-label">${label}</label>
+          ${inputHtml}
+          ${hint ? '<div class="form-hint">' + hint + '</div>' : ''}
+        </div>`;
+    }
+
+    function inputBase() { return "form-input"; }
+
+    // ---------- Dropdown ----------
+    document.addEventListener('click', function (e) {
+      if (!e.target.closest('[data-dd-trigger]')) {
+        document.querySelectorAll('[data-dd-menu]').forEach(function (m) { m.classList.add('hidden'); });
+      }
+    });
+
+    function toggleFilterDD() {
+      var menu = document.getElementById('filterDD');
+      var isHidden = menu.classList.contains('hidden');
+      document.querySelectorAll('[data-dd-menu]').forEach(function (m) { m.classList.add('hidden'); });
+      if (isHidden) menu.classList.remove('hidden');
+    }
+
+    // ---------- Helpers ----------
+    function money(n) { return '₹' + Number(n).toLocaleString('en-IN'); }
+
+    function badge(text, color) {
+      var map = { green: 'badge-green', amber: 'badge-amber', red: 'badge-red', gray: 'badge-gray', blue: 'badge-blue' };
+      var dot = { green: 'badge-dot-green', amber: 'badge-dot-amber', red: 'badge-dot-red', gray: 'badge-dot-gray', blue: 'badge-dot-blue' };
+      return '<span class="badge ' + map[color] + '"><span class="badge-dot ' + dot[color] + '"></span>' + text + '</span>';
+    }
+
+    function rowActionsHtml(editFn, delFn, viewFn) {
+      var html = '<div class="flex gap-1">';
+      if (viewFn) {
+        html += '<button onclick="' + viewFn + '" class="btn-icon-action" title="View">' + iconEye() + '</button>';
+      }
+      html += '<button onclick="' + editFn + '" class="btn-icon-action" title="Edit">' + iconEdit() + '</button>';
+      html += '<button onclick="' + delFn + '" class="btn-icon-action danger" title="Delete">' + iconTrash() + '</button>';
+      html += '</div>';
+      return html;
+    }
+
+    function panelWrap(titleHtml, bodyHtml, extraHead) {
+      return `
+        <div class="bg-white border border-[#6da84c] rounded-xl shadow-sm overflow-hidden">
+          <div class="flex items-center justify-between gap-3 flex-wrap px-5 py-4 border-b border-gray-100">
+            <div class="font-bold text-[14.5px] text-gray-800 flex items-center gap-2">${titleHtml}</div>
+            ${extraHead || ''}
+          </div>
+          <div>${bodyHtml}</div>
+        </div>`;
+    }
+
+    function tableHtml(cols, rowsHtml) {
+      var colHeaders = cols.map(function (c) {
+        return '<th class="text-left text-[11px] font-bold uppercase tracking-wide text-gray-500 px-4 py-3 whitespace-nowrap">' + c + '</th>';
+      }).join('');
+      return `
+        <div class="overflow-auto h-[370px]">
+          <table class="w-full text-[13px]">
+            <thead class="sticky top-0">
+              <tr class="bg-gray-200 border border-[#6da84c]">${colHeaders}</tr>
+            </thead>
+            <tbody id="tbody-anchor">${rowsHtml}</tbody>
+          </table>
+        </div>`;
+    }
+
+    // =============================================================
+    // VENDOR CATEGORY MASTER (new) — mirrors the Customer module's
+    // "Manage Categories" pattern. Frontend-only, in-memory +
+    // localStorage, no backend/API call, no validation beyond a
+    // required category name.
+    // =============================================================
+    var VENDOR_CATEGORY_STORAGE_KEY = 'aquilon_vendor_categories_v1';
+    var vendorCategoryPalette = ['#6da84c', '#1985bf', '#d97706', '#7c3aed', '#dc2626', '#0891b2', '#4f46e5', '#e11d48'];
+
+    var defaultVendorCategories = [
+      { id: 'vt-manufacturer', name: 'Manufacturer', color: '#6da84c', description: 'Produces goods directly' },
+      { id: 'vt-distributor', name: 'Distributor', color: '#1985bf', description: 'Regional distribution partner' },
+      { id: 'vt-wholesaler', name: 'Wholesaler', color: '#d97706', description: 'Bulk supply at wholesale rates' },
+      { id: 'vt-importer', name: 'Importer', color: '#7c3aed', description: 'Imports goods from overseas' },
+      { id: 'vt-service', name: 'Service Provider', color: '#dc2626', description: 'Provides services rather than goods' }
+    ];
+
+    var vendorCategories = [];
+
+    function loadVendorCategories() {
+      try {
+        var raw = localStorage.getItem(VENDOR_CATEGORY_STORAGE_KEY);
+        if (raw) {
+          vendorCategories = JSON.parse(raw);
+        } else {
+          vendorCategories = defaultVendorCategories.slice();
+          saveVendorCategories();
+        }
+      } catch (err) {
+        vendorCategories = defaultVendorCategories.slice();
+      }
+    }
+
+    function saveVendorCategories() {
+      try {
+        localStorage.setItem(VENDOR_CATEGORY_STORAGE_KEY, JSON.stringify(vendorCategories));
+      } catch (err) {
+        // storage unavailable — categories stay in-memory only for this session
+      }
+    }
+
+    function getVendorCategoryById(id) {
+      return vendorCategories.find(function (cat) { return cat.id === id; }) || null;
+    }
+
+    function vendorCategoryBadge(catId) {
+      var cat = getVendorCategoryById(catId);
+      if (!cat) return '<span class="badge badge-gray"><span class="badge-dot badge-dot-gray"></span>Uncategorized</span>';
+      return '<span class="badge" style="background:' + cat.color + '22;color:' + cat.color + '"><span class="badge-dot" style="background:' + cat.color + '"></span>' + cat.name + '</span>';
+    }
+
+    function vendorCategoryCount(catId) {
+      return vendors.filter(function (v) { return v.vendorType === catId; }).length;
+    }
+
+    function vendorCategoryOptionsHtml(selectedId) {
+      return vendorCategories.map(function (cat) {
+        return '<option value="' + cat.id + '" ' + (cat.id === selectedId ? 'selected' : '') + '>' + cat.name + '</option>';
+      }).join('');
+    }
+
+    function populateVendorTypeFilter() {
+      var sel = document.getElementById('filterVendorType');
+      if (!sel) return;
+      var current = sel.value || 'all';
+      sel.innerHTML = '<option value="all">All Types</option>' + vendorCategories.map(function (cat) {
+        return '<option value="' + cat.id + '">' + cat.name + '</option>';
+      }).join('');
+      sel.value = current;
+      if (sel.value !== current) sel.value = 'all';
+    }
+
+    // ---------- Manage Vendor Categories Overlay ----------
+    function openVendorCategoryManageOverlay() {
+      openModal(vendorCategoryOverlayHtml(), { width: 'max-w-lg', id: 'vendor-category-manage-overlay' });
+      setTimeout(bindVendorCategoryOverlayEvents, 30);
+    }
+
+    function vendorCategoryOverlayHtml() {
+      var rows = vendorCategories.length
+        ? vendorCategories.map(function (cat) {
+          var count = vendorCategoryCount(cat.id);
+          return `
+              <div class="cat-row">
+                <span class="cat-color-dot" style="background:${cat.color}"></span>
+                <div class="min-w-0 flex-1">
+                  <div class="text-[13px] font-semibold text-gray-800">${cat.name}</div>
+                  <div class="text-[11px] text-gray-400">${count} vendor${count === 1 ? '' : 's'}${cat.description ? ' · ' + cat.description : ''}</div>
+                </div>
+                <button onclick="editVendorCategoryInline('${cat.id}')" class="btn-icon-action" title="Edit">${iconEdit()}</button>
+                <button onclick="deleteVendorCategory('${cat.id}')" class="btn-icon-action danger" title="Delete">${iconTrash()}</button>
+              </div>`;
+        }).join('')
+        : `<div class="text-center py-6 text-gray-400 text-[12px]">No vendor categories yet. Add your first one below.</div>`;
+
+      return `
+        ${modalHeader('Manage Vendor Categories', 'Create and organize the vendor type master')}
+        <div class="px-6 py-4 modal-scroll">
+          <div id="vendorCategoryListWrap">${rows}</div>
+
+          <button id="toggleAddVendorCategoryBtn" onclick="toggleAddVendorCategoryForm()" class="mt-2 inline-flex items-center gap-1.5 text-[12.5px] font-semibold text-primary hover:underline">
+            ${iconPlus()} Add Category
+          </button>
+
+          <div id="addVendorCategoryForm" class="cat-add-form">
+            <div class="mt-3 border border-gray-100 rounded-xl p-4 bg-gray-50">
+              <input type="hidden" id="vcat_edit_id" value="">
+              ${fld('Category Name <span class="required">*</span>', '<input id="vcat_name" placeholder="e.g. Manufacturer" class="' + inputBase() + '">')}
+              ${fld('Color Tag', '<div id="vcat_color_swatches" class="flex flex-wrap gap-2 mt-1"></div><input type="hidden" id="vcat_color" value="' + vendorCategoryPalette[0] + '">')}
+              ${fld('Description', '<textarea id="vcat_description" rows="2" class="' + inputBase() + '" placeholder="Optional short note"></textarea>')}
+              <div class="flex justify-end gap-2 mt-2">
+                <button onclick="toggleAddVendorCategoryForm(true)" class="px-3 py-1.5 rounded-lg text-[12px] font-semibold text-gray-600 border border-gray-200 hover:bg-white transition">Cancel</button>
+                <button onclick="saveVendorCategory()" class="px-3 py-1.5 rounded-lg text-[12px] font-semibold text-white bg-primary hover:bg-primary-dark transition flex items-center gap-1.5">${iconSave()} Save Category</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="flex items-center justify-end gap-2 px-6 py-4 border-t border-gray-100 bg-gray-50 rounded-b-2xl sticky bottom-0">
+          <button onclick="closeModal()" class="px-4 py-2 rounded-lg text-sm font-semibold text-gray-600 border border-gray-200 hover:bg-white transition">Close</button>
+        </div>`;
+    }
+
+    function bindVendorCategoryOverlayEvents() {
+      renderVendorColorSwatches(document.getElementById('vcat_color') ? document.getElementById('vcat_color').value : vendorCategoryPalette[0]);
+    }
+
+    function renderVendorColorSwatches(selectedColor) {
+      var wrap = document.getElementById('vcat_color_swatches');
+      if (!wrap) return;
+      wrap.innerHTML = vendorCategoryPalette.map(function (c) {
+        return '<span class="cat-swatch ' + (c === selectedColor ? 'selected' : '') + '" style="background:' + c + '" onclick="pickVendorCategoryColor(\'' + c + '\')"></span>';
+      }).join('');
+    }
+
+    function pickVendorCategoryColor(color) {
+      document.getElementById('vcat_color').value = color;
+      renderVendorColorSwatches(color);
+    }
+
+    function toggleAddVendorCategoryForm(forceClose) {
+      var form = document.getElementById('addVendorCategoryForm');
+      if (!form) return;
+      var willOpen = forceClose ? false : !form.classList.contains('open');
+      form.classList.toggle('open', willOpen);
+      if (willOpen) {
+        document.getElementById('vcat_edit_id').value = '';
+        document.getElementById('vcat_name').value = '';
+        document.getElementById('vcat_description').value = '';
+        document.getElementById('vcat_color').value = vendorCategoryPalette[0];
+        renderVendorColorSwatches(vendorCategoryPalette[0]);
+      }
+    }
+
+    function editVendorCategoryInline(id) {
+      var cat = getVendorCategoryById(id);
+      if (!cat) return;
+      var form = document.getElementById('addVendorCategoryForm');
+      form.classList.add('open');
+      document.getElementById('vcat_edit_id').value = cat.id;
+      document.getElementById('vcat_name').value = cat.name;
+      document.getElementById('vcat_description').value = cat.description || '';
+      document.getElementById('vcat_color').value = cat.color;
+      renderVendorColorSwatches(cat.color);
+      form.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    function saveVendorCategory() {
+      var editId = document.getElementById('vcat_edit_id').value;
+      var name = document.getElementById('vcat_name').value.trim();
+      var color = document.getElementById('vcat_color').value || vendorCategoryPalette[0];
+      var description = document.getElementById('vcat_description').value.trim();
+
+      if (!name) {
+        showToast('Category name is required', 'error');
+        return;
+      }
+
+      if (editId) {
+        var cat = getVendorCategoryById(editId);
+        if (cat) {
+          cat.name = name;
+          cat.color = color;
+          cat.description = description;
+          showToast('Vendor category updated', 'success');
+        }
+      } else {
+        vendorCategories.push({
+          id: 'vt-' + Date.now(),
+          name: name,
+          color: color,
+          description: description
+        });
+        showToast('Vendor category added', 'success');
+      }
+
+      saveVendorCategories();
+      refreshVendorCategoryOverlay();
+      populateVendorTypeFilter();
+      renderVendors();
+    }
+
+    function deleteVendorCategory(id) {
+      var count = vendorCategoryCount(id);
+      var msg = count > 0
+        ? 'This category is used by ' + count + ' vendor(s). Delete anyway? Their type will show as Uncategorized.'
+        : 'Delete this vendor category?';
+      if (!window.confirm(msg)) return;
+      vendorCategories = vendorCategories.filter(function (c) { return c.id !== id; });
+      saveVendorCategories();
+      refreshVendorCategoryOverlay();
+      populateVendorTypeFilter();
+      renderVendors();
+      showToast('Vendor category deleted', 'warning');
+    }
+
+    function refreshVendorCategoryOverlay() {
+      var overlay = document.getElementById('vendor-category-manage-overlay');
+      if (!overlay) return;
+      overlay.innerHTML = vendorCategoryOverlayHtml();
+      setTimeout(bindVendorCategoryOverlayEvents, 30);
+    }
+
+    // =============================================================
+    // DATA (dummy, in-memory — no backend / API integration)
+    // =============================================================
+
+    var vendorColors = ['#6da84c', '#1985bf', '#d97706', '#7c3aed', '#dc2626', '#0891b2', '#4f46e5'];
+
+    // Tiny text file used as a stand-in for an uploaded document so that
+    // View / Download work on the dummy vendors.
+    function dummyDocUrl(text) {
+      try { return 'data:text/plain;base64,' + btoa(text); } catch (e) { return ''; }
+    }
+
+    var vendors = [
+      {
+        id: 'VND-001', name: 'Rajesh Patil', companyName: 'Shree Ganesh Industries Pvt Ltd', vendorType: 'vt-manufacturer',
+        email: 'rajesh@shreeganesh.example', phone: '+91-98220-11234',
+        address: 'Plot 21, MIDC Bhosari', city: 'Pune', state: 'Maharashtra', stateCode: '27', pincode: '411026',
+        gstin: '27AABCS1429B1Z5', pan: 'AABCS1429B', gstRegistered: true,
+        bankName: 'HDFC Bank', bankAccount: '50200012345678', bankIfsc: 'HDFC0001234',
+        paymentTerms: 'Net 30 days', status: 'active', outstanding: 245000, createdAt: '2026-06-12',
+        secondaryContacts: [
+          { name: 'Sunita Patil', designation: 'Accounts Manager', mobile: '+91-98220-55678', email: 'accounts@shreeganesh.example' }
+        ],
+        documents: [
+          { id: 'DOC-1001', documentType: 'GST Certificate', fileName: 'gst-certificate.txt', fileUrl: dummyDocUrl('Dummy GST certificate — Shree Ganesh Industries') },
+          { id: 'DOC-1002', documentType: 'PAN Card', fileName: 'pan-card.txt', fileUrl: dummyDocUrl('Dummy PAN card — Shree Ganesh Industries') }
+        ]
+      },
+      {
+        id: 'VND-002', name: 'Anil Deshmukh', companyName: 'Aqua Flow Systems', vendorType: 'vt-distributor',
+        email: 'anil@aquaflow.example', phone: '+91-98190-22345',
+        address: '14, Andheri Kurla Road, Sakinaka', city: 'Mumbai', state: 'Maharashtra', stateCode: '27', pincode: '400072',
+        gstin: '27AAACA5678C1Z2', pan: 'AAACA5678C', gstRegistered: true,
+        bankName: 'ICICI Bank', bankAccount: '004105001234', bankIfsc: 'ICIC0000041',
+        paymentTerms: 'Net 15 days', status: 'active', outstanding: 118500, createdAt: '2026-06-28',
+        secondaryContacts: [],
+        documents: [
+          { id: 'DOC-2001', documentType: 'Agreement', fileName: 'supply-agreement.txt', fileUrl: dummyDocUrl('Dummy supply agreement — Aqua Flow Systems') }
+        ]
+      },
+      {
+        id: 'VND-003', name: 'Mahesh Jadhav', companyName: 'Metro Steel Traders', vendorType: 'vt-wholesaler',
+        email: 'mahesh@metrosteel.example', phone: '+91-97650-33456',
+        address: 'Gat No. 88, Ambad MIDC', city: 'Nashik', state: 'Maharashtra', stateCode: '27', pincode: '422010',
+        gstin: '27AAEFM9012D1Z8', pan: 'AAEFM9012D', gstRegistered: true,
+        bankName: 'State Bank of India', bankAccount: '32145678901', bankIfsc: 'SBIN0004321',
+        paymentTerms: 'Net 45 days', status: 'active', outstanding: 76000, createdAt: '2026-07-04',
+        secondaryContacts: [],
+        documents: []
+      },
+      {
+        id: 'VND-004', name: 'Kiran Shah', companyName: 'Global Pumps & Valves', vendorType: 'vt-importer',
+        email: 'kiran@globalpumps.example', phone: '+91-98250-44567',
+        address: '5th Floor, Ashram Road', city: 'Ahmedabad', state: 'Gujarat', stateCode: '24', pincode: '380009',
+        gstin: '24AABCG3456E1Z1', pan: 'AABCG3456E', gstRegistered: true,
+        bankName: 'Axis Bank', bankAccount: '918020045678901', bankIfsc: 'UTIB0000123',
+        paymentTerms: 'Net 60 days', status: 'active', outstanding: 392000, createdAt: '2026-07-19',
+        secondaryContacts: [
+          { name: 'Pooja Shah', designation: 'Import Coordinator', mobile: '+91-98250-66789', email: 'import@globalpumps.example' }
+        ],
+        documents: [
+          { id: 'DOC-4001', documentType: 'Bank Proof', fileName: 'cancelled-cheque.txt', fileUrl: dummyDocUrl('Dummy cancelled cheque — Global Pumps & Valves') }
+        ]
+      },
+      {
+        id: 'VND-005', name: 'Vikram Rao', companyName: 'Precision Engineering Services', vendorType: 'vt-service',
+        email: 'vikram@precisioneng.example', phone: '+91-98450-55678',
+        address: '32, Peenya Industrial Area', city: 'Bengaluru', state: 'Karnataka', stateCode: '29', pincode: '560058',
+        gstin: '29AAECP7890F1Z6', pan: 'AAECP7890F', gstRegistered: true,
+        bankName: 'Kotak Mahindra Bank', bankAccount: '7412589630', bankIfsc: 'KKBK0000456',
+        paymentTerms: 'Net 7 days', status: 'inactive', outstanding: 18000, createdAt: '2026-08-02',
+        secondaryContacts: [],
+        documents: []
+      },
+      {
+        id: 'VND-006', name: 'Santosh Kadam', companyName: 'Kisan Agro Supplies', vendorType: 'vt-wholesaler',
+        email: 'santosh@kisanagro.example', phone: '+91-98600-66789',
+        address: 'Shahupuri Main Road', city: 'Kolhapur', state: 'Maharashtra', stateCode: '27', pincode: '416001',
+        gstin: '', pan: 'BCDPK4567G', gstRegistered: false,
+        bankName: 'Bank of Maharashtra', bankAccount: '60123456789', bankIfsc: 'MAHB0000789',
+        paymentTerms: 'Advance Payment', status: 'active', outstanding: 32500, createdAt: '2026-08-21',
+        secondaryContacts: [],
+        documents: []
+      }
+    ];
+
+    // ---------- Purchase history (dummy) ----------
+    var purchaseOrders = [
+      { id: 'PO-2026-001', vendorId: 'VND-001', date: '2026-07-02', amount: 185000, status: 'closed' },
+      { id: 'PO-2026-004', vendorId: 'VND-001', date: '2026-08-14', amount: 245000, status: 'open' },
+      { id: 'PO-2026-002', vendorId: 'VND-002', date: '2026-07-10', amount: 96000, status: 'closed' },
+      { id: 'PO-2026-006', vendorId: 'VND-002', date: '2026-09-01', amount: 118500, status: 'open' },
+      { id: 'PO-2026-003', vendorId: 'VND-003', date: '2026-07-25', amount: 76000, status: 'open' },
+      { id: 'PO-2026-005', vendorId: 'VND-004', date: '2026-08-20', amount: 392000, status: 'open' },
+      { id: 'PO-2026-007', vendorId: 'VND-005', date: '2026-08-05', amount: 18000, status: 'closed' },
+      { id: 'PO-2026-008', vendorId: 'VND-006', date: '2026-09-12', amount: 32500, status: 'open' }
+    ];
+
+    function getVendorPurchaseOrders(vendorId) {
+      return purchaseOrders.filter(function (po) { return po.vendorId === vendorId; });
+    }
+
+    var documentTypeOptions = ['GST Certificate', 'PAN Card', 'Bank Proof', 'Agreement', 'Other'];
+
+    // ---------- Helpers ----------
+
+    function colorForVendorId(id) {
+      var str = String(id || '');
+      var hash = 0;
+      for (var i = 0; i < str.length; i++) {
+        hash = (hash * 31 + str.charCodeAt(i)) >>> 0;
+      }
+      return vendorColors[hash % vendorColors.length];
+    }
+
+    vendors.forEach(function (v) { v.color = colorForVendorId(v.id); });
+
+    function nextVendorId() {
+      var max = vendors.reduce(function (m, v) {
+        var n = parseInt(String(v.id).replace(/\D/g, ''), 10);
+        return isNaN(n) ? m : Math.max(m, n);
+      }, 0);
+      return 'VND-' + String(max + 1).padStart(3, '0');
+    }
+
+    function normalizeDocType(type) {
+      var value = String(type || '').trim().toUpperCase();
+      if (value.indexOf('GST') >= 0) return 'GST';
+      if (value.indexOf('PAN') >= 0) return 'PAN';
+      if (value.indexOf('BANK') >= 0) return 'BANK';
+      if (value.indexOf('AGREEMENT') >= 0) return 'AGREEMENT';
+      if (value === 'OTHER') return 'OTHER';
+      return value;
+    }
+
+    // ---------- Documents tab (view-only detail modal) ----------
+
+    // Server-stored documents come back as base64 "data:" URLs. Browsers
+    // increasingly block window.open() on a data: URL as a top-level
+    // navigation, so this converts it to a blob: URL first, which works
+    // reliably for both viewing and downloading. Locally-staged documents
+    // (not yet uploaded) already use a blob: URL and pass through untouched.
+    function resolveViewableUrl(fileUrl) {
+      if (!fileUrl) return fileUrl;
+
+      // Plain (non-data, non-blob) URLs are used as-is.
+      if (fileUrl.indexOf('data:') !== 0 && fileUrl.indexOf('blob:') !== 0) return fileUrl;
+
+      if (fileUrl.indexOf('data:') !== 0) {
+        return fileUrl;
+      }
+      try {
+        var commaIdx = fileUrl.indexOf(',');
+        var meta = fileUrl.substring(5, commaIdx); // "<mime>;base64"
+        var mime = meta.split(';')[0] || 'application/octet-stream';
+        var binary = atob(fileUrl.substring(commaIdx + 1));
+        var bytes = new Uint8Array(binary.length);
+        for (var i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+        var blob = new Blob([bytes], { type: mime });
+        return URL.createObjectURL(blob);
+      } catch (e) {
+        console.error('Failed to convert data URL to blob URL', e);
+        return fileUrl;
+      }
+    }
+
+    function viewVendorDocument(vendorId, idx) {
+      var v = vendors.find(function (x) { return x.id === vendorId; });
+      var doc = v && v.documents ? v.documents[idx] : null;
+      if (!doc) return;
+      if (doc.fileUrl) {
+        window.open(resolveViewableUrl(doc.fileUrl), '_blank');
+      } else {
+        showToast('No stored file to preview for "' + doc.fileName + '"', 'info');
+      }
+    }
+
+    async function downloadVendorDocument(vendorId, idx) {
+      var v = vendors.find(function (x) { return x.id === vendorId; });
+      var doc = v && v.documents ? v.documents[idx] : null;
+      if (!doc) return;
+
+      if (!doc.fileUrl) {
+        showToast('No stored file to download for "' + doc.fileName + '"', 'info');
+        return;
+      }
+
+      var fileUrl = resolveViewableUrl(doc.fileUrl);
+
+      try {
+        // Fetch the file and create a local blob URL.
+        // This forces a real download.
+        var response = await fetch(fileUrl);
+
+        if (!response.ok) {
+          throw new Error('Failed to download document');
+        }
+
+        var blob = await response.blob();
+        var blobUrl = URL.createObjectURL(blob);
+
+        var a = document.createElement('a');
+        a.href = blobUrl;
+        a.download = doc.fileName || 'document';
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+
+        setTimeout(function () {
+          URL.revokeObjectURL(blobUrl);
+        }, 1000);
+      } catch (error) {
+        console.error('Document download failed:', error);
+        showToast('Failed to download document', 'error');
+      }
+    }
+
+    // =============================================================
+    // FUNCTIONS
+    // =============================================================
+
+    function getInitials(name) {
+      if (!name) return 'V';
+      var parts = name.split(' ');
+      if (parts.length === 1) return name.substring(0, 2).toUpperCase();
+      return (parts[0].charAt(0) + parts[parts.length - 1].charAt(0)).toUpperCase();
+    }
+
+    function renderStats() {
+      document.getElementById('totalVendors').textContent = vendors.length;
+      var active = vendors.filter(function (v) { return v.status === 'active'; });
+      document.getElementById('activeVendors').textContent = active.length;
+      var gst = vendors.filter(function (v) { return v.gstRegistered; });
+      document.getElementById('gstVendors').textContent = gst.length;
+      var total = vendors.reduce(function (sum, v) { return sum + v.outstanding; }, 0);
+      document.getElementById('totalPayable').textContent = money(total);
+    }
+
+    function getFilteredVendors() {
+      var searchInput = document.getElementById('searchInput');
+      var q = searchInput ? searchInput.value.toLowerCase() : '';
+      var status = document.getElementById('filterStatus') ? document.getElementById('filterStatus').value : 'all';
+      var gst = document.getElementById('filterGST') ? document.getElementById('filterGST').value : 'all';
+      var vtype = document.getElementById('filterVendorType') ? document.getElementById('filterVendorType').value : 'all';
+
+      return vendors.filter(function (v) {
+        var matchSearch = v.name.toLowerCase().indexOf(q) !== -1 ||
+          v.companyName.toLowerCase().indexOf(q) !== -1 ||
+          v.id.toLowerCase().indexOf(q) !== -1 ||
+          v.phone.indexOf(q) !== -1 ||
+          v.email.toLowerCase().indexOf(q) !== -1;
+        var matchStatus = status === 'all' || v.status === status;
+        var matchGST = gst === 'all' || (gst === 'yes' ? v.gstRegistered : !v.gstRegistered);
+        var matchType = vtype === 'all' || v.vendorType === vtype;
+        return matchSearch && matchStatus && matchGST && matchType;
+      });
+    }
+
+    var currentVendorPage = 1;
+    var currentVendorPageSize = 25;
+
+    function setVendorPageSize(value) {
+      var size = parseInt(value, 10);
+      currentVendorPageSize = [10, 25, 50, 100].indexOf(size) !== -1 ? size : 25;
+      currentVendorPage = 1;
+      renderVendors();
+    }
+
+    function changeVendorPage(page) {
+      var filtered = getFilteredVendors();
+      var totalPages = Math.max(1, Math.ceil(filtered.length / currentVendorPageSize));
+      currentVendorPage = Math.min(Math.max(1, page), totalPages);
+      renderVendors();
+    }
+
+    function vendorPaginationHtml(totalItems) {
+      var totalPages = Math.max(1, Math.ceil(totalItems / currentVendorPageSize));
+      if (currentVendorPage > totalPages) currentVendorPage = totalPages;
+
+      var start = totalItems === 0 ? 0 : ((currentVendorPage - 1) * currentVendorPageSize) + 1;
+      var end = Math.min(currentVendorPage * currentVendorPageSize, totalItems);
+
+      var html = '<div class=\"flex items-center justify-between gap-3 flex-wrap px-5 py-3 border-t border-gray-200\">';
+      html += '<div class=\"text-[11px] text-gray-500\">Showing ' + start + '–' + end + ' of ' + totalItems + '</div>';
+      html += '<div class=\"flex items-center gap-1\">';
+      html += '<button type=\"button\" onclick=\"changeVendorPage(' + (currentVendorPage - 1) + ')\" ' + (currentVendorPage === 1 ? 'disabled' : '') + ' class=\"px-2.5 py-1 text-[11px] border rounded-lg ' + (currentVendorPage === 1 ? 'text-gray-300 cursor-not-allowed' : 'text-gray-600 hover:bg-gray-50') + '\">Previous</button>';
+
+      var from = Math.max(1, currentVendorPage - 2);
+      var to = Math.min(totalPages, from + 4);
+      from = Math.max(1, to - 4);
+      for (var i = from; i <= to; i++) {
+        html += '<button type=\"button\" onclick=\"changeVendorPage(' + i + ')\" class=\"px-2.5 py-1 text-[11px] border rounded-lg ' + (i === currentVendorPage ? 'bg-primary text-white border-primary' : 'text-gray-600 hover:bg-gray-50') + '\">' + i + '</button>';
+      }
+
+      html += '<button type=\"button\" onclick=\"changeVendorPage(' + (currentVendorPage + 1) + ')\" ' + (currentVendorPage === totalPages ? 'disabled' : '') + ' class=\"px-2.5 py-1 text-[11px] border rounded-lg ' + (currentVendorPage === totalPages ? 'text-gray-300 cursor-not-allowed' : 'text-gray-600 hover:bg-gray-50') + '\">Next</button>';
+      html += '</div></div>';
+      return html;
+    }
+
+    function renderVendors() {
+      var filtered = getFilteredVendors();
+      var totalPages = Math.max(1, Math.ceil(filtered.length / currentVendorPageSize));
+      if (currentVendorPage > totalPages) currentVendorPage = totalPages;
+      var pageStart = (currentVendorPage - 1) * currentVendorPageSize;
+      var pagedVendors = filtered.slice(pageStart, pageStart + currentVendorPageSize);
+
+      var rowsHtml = '';
+      if (filtered.length === 0) {
+        rowsHtml = `
+          <tr>
+            <td colspan="8" class="text-center py-10 text-gray-400 text-sm">
+              <div class="flex justify-center mb-2 empty-icon-svg">${iconBuilding()}</div>
+              No vendors found. Try adjusting your filters or
+              <button onclick="openAddVendor()" class="text-primary font-semibold hover:underline">add a new vendor</button>.
+            </td>
+          </tr>`;
+      } else {
+        rowsHtml = pagedVendors.map(function (v) {
+          var statusBadge = v.status === 'active' ? badge('Active', 'green') : badge('Inactive', 'gray');
+          var gstBadge = v.gstRegistered ? badge('GST Registered', 'blue') : badge('Unregistered', 'amber');
+          return `
+            <tr class="border-b border-gray-400 table-row-hover">
+              <td class="px-4 py-3">
+                <div class="flex items-center gap-3">
+                  <div class="vendor-avatar" style="background:${v.color}">${getInitials(v.name)}</div>
+                  <div>
+                    <div class="font-semibold text-gray-800">${v.name}</div>
+                    <div class="text-[11.5px] text-gray-400 font-mono">${v.id}</div>
+                  </div>
+                </div>
+              </td>
+              <td class="px-4 py-3">${vendorCategoryBadge(v.vendorType)}</td>
+              <td class="px-4 py-3 text-gray-600">${v.companyName || '—'}</td>
+              <td class="px-4 py-3 font-mono text-[12px] text-gray-500">${v.gstin || '—'}</td>
+              <td class="px-4 py-3">${gstBadge}</td>
+              <td class="px-4 py-3 font-mono font-semibold text-amber-600">${money(v.outstanding)}</td>
+              <td class="px-4 py-3">${statusBadge}</td>
+              <td class="px-4 py-3">${rowActionsHtml(
+            "editVendor('" + v.id + "')",
+            "delVendor('" + v.id + "')",
+            "viewVendor('" + v.id + "')"
+          )}</td>
+            </tr>`;
+        }).join('');
+      }
+
+      var panelHtml = panelWrap(
+        'All Vendors <span class="text-[11px] font-bold bg-primary-soft text-primary-dark px-2 py-0.5 rounded-full ml-1">' + filtered.length + '</span>',
+        tableHtml(['Vendor', 'Type', 'Company', 'GSTIN', 'GST Status', 'Outstanding', 'Status', 'Actions'], rowsHtml) + vendorPaginationHtml(filtered.length),
+        '<div class="flex items-center gap-2"><span class="text-[11px] text-gray-400">Show:</span><select id="pageSizeSelect" onchange="setVendorPageSize(this.value)" class="text-[12px] border border-[#6da84c] rounded-lg px-2 py-1 bg-white outline-none"><option value="10" ' + (currentVendorPageSize === 10 ? 'selected' : '') + '>10</option><option value="25" ' + (currentVendorPageSize === 25 ? 'selected' : '') + '>25</option><option value="50" ' + (currentVendorPageSize === 50 ? 'selected' : '') + '>50</option><option value="100" ' + (currentVendorPageSize === 100 ? 'selected' : '') + '>100</option></select></div>'
+      );
+
+      document.getElementById('vendorsPanel').innerHTML = panelHtml;
+      renderStats();
+    }
+
+    function filterVendors() {
+      currentVendorPage = 1;
+      renderVendors();
+    }
+
+    function clearFilters() {
+      document.getElementById('filterStatus').value = 'all';
+      document.getElementById('filterGST').value = 'all';
+      if (document.getElementById('filterVendorType')) document.getElementById('filterVendorType').value = 'all';
+      var searchInput = document.getElementById('searchInput');
+      if (searchInput) searchInput.value = '';
+      currentVendorPage = 1;
+      renderVendors();
+      toggleFilterDD();
+    }
+
+    // =============================================================
+    // ADD / EDIT VENDOR
+    // =============================================================
+
+    function openAddVendor() { openVendorModal(null); }
+
+    function editVendor(id) {
+      var v = vendors.find(function (x) { return x.id === id; });
+      if (!v) return;
+      openVendorModal(v);
+    }
+
+    // ---------- Secondary Contact Person (new, Basic Info tab) ----------
+    function secondaryContactBlockHtml(idx, contact) {
+      contact = contact || {};
+      return `
+        <div class="secondary-contact-block" data-contact-idx="${idx}">
+          <button type="button" onclick="removeSecondaryContact(${idx})" class="secondary-contact-remove btn-icon-action danger" title="Remove contact">${iconX()}</button>
+          <div class="grid grid-cols-2 gap-3">
+            ${fld('Contact Name', '<input class="sc_name ' + inputBase() + '" value="' + (contact.name || '') + '" placeholder="Full name">')}
+            ${fld('Designation', '<input class="sc_designation ' + inputBase() + '" value="' + (contact.designation || '') + '" placeholder="e.g. Accounts Manager">')}
+          </div>
+          <div class="grid grid-cols-2 gap-3">
+            ${fld('Mobile', '<input class="sc_mobile ' + inputBase() + '" value="' + (contact.mobile || '') + '" placeholder="+91-XXXXXXXXXX">')}
+            ${fld('Email', '<input class="sc_email ' + inputBase() + '" type="email" value="' + (contact.email || '') + '" placeholder="contact@domain.com">')}
+          </div>
+        </div>`;
+    }
+
+    var secondaryContactCounter = 0;
+
+    function addSecondaryContactBlock(contact) {
+      var wrap = document.getElementById('secondaryContactsWrap');
+      if (!wrap) return;
+      var idx = secondaryContactCounter++;
+      var div = document.createElement('div');
+      div.innerHTML = secondaryContactBlockHtml(idx, contact);
+      wrap.appendChild(div.firstElementChild);
+    }
+
+    function removeSecondaryContact(idx) {
+      var block = document.querySelector('.secondary-contact-block[data-contact-idx="' + idx + '"]');
+      if (block) block.remove();
+    }
+
+    function collectSecondaryContacts() {
+      var blocks = document.querySelectorAll('.secondary-contact-block');
+      var contacts = [];
+      blocks.forEach(function (block) {
+        var name = block.querySelector('.sc_name').value.trim();
+        var designation = block.querySelector('.sc_designation').value.trim();
+        var mobile = block.querySelector('.sc_mobile').value.trim();
+        var email = block.querySelector('.sc_email').value.trim();
+        if (name || designation || mobile || email) {
+          contacts.push({ name: name, designation: designation, mobile: mobile, email: email });
+        }
+      });
+      return contacts;
+    }
+
+    // ---------- Documents tab (new) ----------
+    function documentsTabHtml(v) {
+      var docs = v.documents || [];
+
+      var rows = docs.length
+        ? docs.map(function (d, idx) {
+          return `
+          <div class="doc-row">
+            
+            <div class="doc-icon">
+              ${iconDoc()}
+            </div>
+
+            <div class="min-w-0 flex-1">
+              <div class="text-[13px] font-semibold text-gray-800">
+                ${d.documentType}
+              </div>
+
+              <div class="text-[11px] text-gray-400">
+                ${d.fileName || ((d.documentType || d.type || 'Document') + ' Document')}
+              </div>
+            </div>
+
+            <div class="flex gap-1">
+
+              <!-- VIEW -->
+              <button
+                onclick="viewVendorDocument('${v.id}', ${idx})"
+                class="btn-icon-action"
+                title="View">
+                ${iconEye()}
+              </button>
+
+              <!-- DOWNLOAD -->
+              <button
+                onclick="downloadVendorDocument('${v.id}', ${idx})"
+                class="btn-icon-action"
+                title="Download">
+                ${iconDownload()}
+              </button>
+
+            </div>
+
+          </div>
+        `;
+        }).join('')
+        : `
+      <div class="text-center py-8 text-gray-400 text-[12px]">
+        <div class="flex justify-center mb-2 empty-icon-svg">
+          ${iconDoc()}
         </div>
 
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-3.5 mb-6">
-          <div class="bg-white rounded-xl shadow-sm p-4 stat-card flex items-center gap-3">
-            <div class="stat-icon-wrap bg-primary-soft text-primary"><i class="fa-solid fa-money-check-dollar"></i></div>
-            <div><div class="text-[10.5px] font-semibold uppercase tracking-wider text-gray-500">Total Payments</div><div class="text-[16px] font-bold text-gray-900" id="totalPayments">0</div></div>
-          </div>
-          <div class="bg-white rounded-xl shadow-sm p-4 stat-card flex items-center gap-3">
-            <div class="stat-icon-wrap bg-green-50 text-green-600"><i class="fa-solid fa-circle-check"></i></div>
-            <div><div class="text-[10.5px] font-semibold uppercase tracking-wider text-gray-500">Total Paid</div><div class="text-[16px] font-bold text-green-600" id="totalPaid">₹0</div></div>
-          </div>
-          <div class="bg-white rounded-xl shadow-sm p-4 stat-card flex items-center gap-3">
-            <div class="stat-icon-wrap bg-secondary-soft text-secondary"><i class="fa-solid fa-calendar-days"></i></div>
-            <div><div class="text-[10.5px] font-semibold uppercase tracking-wider text-gray-500">This Month</div><div class="text-[16px] font-bold text-blue-600" id="thisMonth">₹0</div></div>
-          </div>
-          <div class="bg-white rounded-xl shadow-sm p-4 stat-card flex items-center gap-3">
-            <div class="stat-icon-wrap bg-amber-50 text-amber-600"><i class="fa-solid fa-hourglass-half"></i></div>
-            <div><div class="text-[10.5px] font-semibold uppercase tracking-wider text-gray-500">Pending</div><div class="text-[16px] font-bold text-amber-600" id="pendingAmount">₹0</div></div>
-          </div>
-        </div>
-
-        <div id="paymentsPanel"></div>
+        No documents uploaded yet for this vendor.
       </div>
-    </main>
+    `;
+
+      return `
+    <div class="flex items-center justify-between mb-3">
+
+      <div class="text-[12px] font-bold text-gray-700">
+        Documents (${docs.length})
+      </div>
+
+    </div>
+
+    <div id="vendorDocsListWrap">
+      ${rows}
+    </div>
+  `;
+    }
+
+
+
+    // ---------- Purchase Summary tab (new) ----------
+    function purchaseSummaryHtml(v) {
+      var orders = getVendorPurchaseOrders(v.id);
+      var totalValue = orders.reduce(function (sum, po) { return sum + po.amount; }, 0);
+      var avgValue = orders.length ? Math.round(totalValue / orders.length) : 0;
+      var openCount = orders.filter(function (po) { return po.status === 'open'; }).length;
+
+      var rows = orders.length
+        ? orders.map(function (po) {
+          return `
+              <tr class="border-b border-gray-100">
+                <td class="px-3 py-2 font-mono text-[12px]">${po.id}</td>
+                <td class="px-3 py-2">${po.date}</td>
+                <td class="px-3 py-2 font-mono font-semibold">${money(po.amount)}</td>
+                <td class="px-3 py-2">${badge(po.status === 'closed' ? 'Closed' : 'Open', po.status === 'closed' ? 'green' : 'amber')}</td>
+              </tr>`;
+        }).join('')
+        : '<tr><td colspan="4" class="text-center py-6 text-gray-400 text-[12px]">No purchase orders recorded yet.</td></tr>';
+
+      return `
+        <div class="grid grid-cols-3 gap-3 mb-5">
+          <div class="report-mini-card">
+            <div class="report-mini-label">Total Purchase Value</div>
+            <div class="report-mini-value">${money(totalValue)}</div>
+          </div>
+          <div class="report-mini-card">
+            <div class="report-mini-label">Total Orders</div>
+            <div class="report-mini-value">${orders.length}</div>
+          </div>
+          <div class="report-mini-card">
+            <div class="report-mini-label">Avg Order Value</div>
+            <div class="report-mini-value">${money(avgValue)}</div>
+          </div>
+        </div>
+        <div class="text-[12px] font-bold text-gray-700 mb-2">Purchase Orders (${openCount} open)</div>
+        <div class="overflow-auto overflow-x-auto ">
+          <table class="w-full text-[13px]">
+            <thead><tr class="bg-gray-50 border-b border-gray-200">
+              <th class="text-left px-3 py-2 text-[10.5px] font-bold uppercase text-gray-500">PO #</th>
+              <th class="text-left px-3 py-2 text-[10.5px] font-bold uppercase text-gray-500">Date</th>
+              <th class="text-left px-3 py-2 text-[10.5px] font-bold uppercase text-gray-500">Amount</th>
+              <th class="text-left px-3 py-2 text-[10.5px] font-bold uppercase text-gray-500">Status</th>
+            </tr></thead>
+            <tbody>${rows}</tbody>
+          </table>
+        </div>`;
+    }
+
+    // ---------- Detail (view) modal — now tabbed: Overview / Purchase Summary / Documents ----------
+    function viewVendor(id, initialTab) {
+      var v = vendors.find(function (x) { return x.id === id; });
+      if (!v) return;
+      initialTab = initialTab || 'tab-overview';
+
+      var contactsHtml = (v.secondaryContacts && v.secondaryContacts.length)
+        ? v.secondaryContacts.map(function (c) {
+          return `<div class="text-[12.5px] text-gray-700 border border-gray-200 rounded-lg px-3 py-2 mb-2">
+                      <span class="font-semibold">${c.name || '—'}</span>${c.designation ? ' · ' + c.designation : ''}<br>
+                      <span class="text-gray-500">${c.mobile || '—'} · ${c.email || '—'}</span>
+                    </div>`;
+        }).join('')
+        : '<div class="text-[12px] text-gray-400">No secondary contacts added.</div>';
+
+      var modalContent = `
+        ${modalHeader('Vendor Details — ' + v.name, v.id)}
+        <div class="px-6 pt-4">
+          <div class="flex border-b border-gray-200 mb-1" id="viewVendorTabs">
+            <button class="modal-tab-btn active" data-tab="tab-overview">${iconUser()} Overview</button>
+            <button class="modal-tab-btn" data-tab="tab-purchase">${iconChart()} Purchase Summary</button>
+            <button class="modal-tab-btn" data-tab="tab-documents">${iconDoc()} Documents</button>
+          </div>
+        </div>
+        <div class="px-6 py-4 modal-scroll">
+          <div id="tab-overview" class="modal-tab-panel active">
+            <div class="flex items-center gap-4 mb-4">
+              <div class="vendor-avatar" style="background:${v.color}; width:48px; height:48px; font-size:18px;">${getInitials(v.name)}</div>
+              <div>
+                <div class="text-lg font-semibold">${v.name}</div>
+                <div class="text-sm text-gray-500">${v.companyName || '—'}</div>
+                <div class="mt-1.5">${vendorCategoryBadge(v.vendorType)}</div>
+              </div>
+            </div>
+
+            <div class="border border-gray-200 rounded-xl p-4 mt-4">
+              <h4 class="text-[11.5px] font-bold uppercase tracking-wide text-gray-400 mb-3">Vendor Info</h4>
+              <div class="grid grid-cols-2 gap-4 text-sm">
+                <div><span class="text-gray-500">Vendor ID</span><br><span class="font-mono font-semibold">${v.id}</span></div>
+                <div><span class="text-gray-500">Status</span><br>${v.status === 'active' ? badge('Active', 'green') : badge('Inactive', 'gray')}</div>
+                <div><span class="text-gray-500">GSTIN</span><br><span class="font-mono">${v.gstin || '—'}</span></div>
+                <div><span class="text-gray-500">PAN</span><br><span class="font-mono">${v.pan || '—'}</span></div>
+                <div><span class="text-gray-500">Email</span><br><span class="text-gray-700">${v.email}</span></div>
+                <div><span class="text-gray-500">Phone</span><br><span class="text-gray-700">${v.phone}</span></div>
+                <div class="col-span-2"><span class="text-gray-500">Address</span><br><span class="text-gray-700">${v.address}, ${v.city}, ${v.state} - ${v.pincode}</span></div>
+                <div><span class="text-gray-500">Payment Terms</span><br><span class="font-semibold">${v.paymentTerms}</span></div>
+                <div><span class="text-gray-500">Outstanding</span><br><span class="font-semibold text-amber-600">${money(v.outstanding)}</span></div>
+              </div>
+            </div>
+
+            <div class="border border-gray-200 rounded-xl p-4 mt-3">
+              <h4 class="text-[13px] font-semibold text-gray-800 mb-3 flex items-center gap-2">${iconBank()} Bank Details</h4>
+              <div class="grid grid-cols-3 gap-3 text-sm">
+                <div><span class="text-gray-500">Bank</span><br><span class="font-semibold">${v.bankName}</span></div>
+                <div><span class="text-gray-500">Account No.</span><br><span class="font-mono">${v.bankAccount}</span></div>
+                <div><span class="text-gray-500">IFSC</span><br><span class="font-mono">${v.bankIfsc}</span></div>
+              </div>
+            </div>
+
+            <div class="border border-gray-200 rounded-xl p-4 mt-3">
+              <h4 class="text-[13px] font-semibold text-gray-800 mb-3 flex items-center gap-2">${iconUser()} Secondary Contacts</h4>
+              ${contactsHtml}
+            </div>
+
+            <div class="mt-2 text-[11px] text-gray-400 flex items-center gap-1">
+              ${iconInfo()} Created on ${v.createdAt}
+            </div>
+          </div>
+
+          <div id="tab-purchase" class="modal-tab-panel">
+            ${purchaseSummaryHtml(v)}
+          </div>
+
+          <div id="tab-documents" class="modal-tab-panel">
+            ${documentsTabHtml(v)}
+          </div>
+        </div>
+        ${modalFooter('Close', 'onclick="closeModal()"')}
+      `;
+
+      openModal(modalContent, { width: 'max-w-2xl' });
+
+      setTimeout(function () {
+        var tabs = document.querySelectorAll('#viewVendorTabs .modal-tab-btn');
+        tabs.forEach(function (btn) {
+          btn.addEventListener('click', function () {
+            tabs.forEach(function (b) { b.classList.remove('active'); });
+            this.classList.add('active');
+            document.querySelectorAll('#tab-overview, #tab-purchase, #tab-documents').forEach(function (p) { p.classList.remove('active'); });
+            document.getElementById(this.dataset.tab).classList.add('active');
+          });
+        });
+        // activate requested initial tab (used when returning from Upload Document overlay)
+        var target = document.querySelector('#viewVendorTabs .modal-tab-btn[data-tab="' + initialTab + '"]');
+        if (target) target.click();
+      }, 50);
+    }
+
+    // =============================================================
+    // ADD/EDIT VENDOR MODAL — breadcrumb-style step tabs with
+    // checkmarks on visited steps (Basic Info → Tax & GST →
+    // Banking → Payment Terms). Field IDs unchanged so
+    // saveVendor() keeps working exactly as before.
+    // =============================================================
+    var VENDOR_STEP_TABS = [
+      { id: 'tab-basic', n: 1, label: 'Basic Info' },
+      { id: 'tab-documents', n: 2, label: 'Documents' },
+      { id: 'tab-tax', n: 3, label: 'Tax & GST' },
+      { id: 'tab-banking', n: 4, label: 'Banking' },
+      { id: 'tab-payment', n: 5, label: 'Payment Terms' }
+      
+    ];
+
+    var vendorVisitedSteps = {};
+
+    function vendorStepTabsHtml(activeId) {
+      return `
+        <div class="step-tabs-wrap" id="vendorStepTabsWrap">
+          ${VENDOR_STEP_TABS.map(function (t, idx) {
+        var isActive = t.id === activeId;
+        var isDone = !!vendorVisitedSteps[t.id] && !isActive;
+        var circle = isDone ? iconCheck() : t.n;
+        return `
+              <div class="step-tab ${isActive ? 'active' : ''} ${isDone ? 'done' : ''}" data-tab="${t.id}" onclick="switchVendorStepTab('${t.id}')">
+                <span class="step-num">${circle}</span>
+                <span>${t.label}</span>
+              </div>
+              ${idx < VENDOR_STEP_TABS.length - 1 ? iconChevronRightSmall() : ''}
+            `;
+      }).join('')}
+        </div>`;
+    }
+
+    function switchVendorStepTab(tabId) {
+      // mark the tab we're leaving as visited
+      var wrap = document.getElementById('vendorStepTabsWrap');
+      if (wrap) {
+        var currentActive = wrap.querySelector('.step-tab.active');
+        if (currentActive) vendorVisitedSteps[currentActive.dataset.tab] = true;
+      }
+      document.querySelectorAll('.modal-tab-panel').forEach(function (p) { p.classList.remove('active'); });
+      var panel = document.getElementById(tabId);
+      if (panel) panel.classList.add('active');
+
+      if (wrap) wrap.outerHTML = vendorStepTabsHtml(tabId);
+    }
+
+    function openVendorModal(existing) {
+      var e = existing || {
+        name: '',
+        companyName: '',
+        vendorType: vendorCategories.length ? vendorCategories[0].id : '',
+        gstin: '',
+        pan: '',
+        email: '',
+        phone: '',
+        address: '',
+        city: '',
+        state: 'Maharashtra',
+        stateCode: '27',
+        pincode: '',
+        paymentTerms: 'Net 15 days',
+        bankName: '',
+        bankAccount: '',
+        bankIfsc: '',
+        gstRegistered: false,
+        status: 'active',
+        color: vendorColors[Math.floor(Math.random() * vendorColors.length)],
+        secondaryContacts: []
+      };
+      var isEdit = !!existing;
+      // Existing documents are kept in the edit form so every saved document is visible.
+      window.vendorFormDocuments = existing
+        ? (existing.documents || []).map(function (doc) {
+          return {
+            id: doc.id || doc.documentId || null,
+            type: doc.documentType || doc.type || 'Other',
+            fileName: doc.fileName || ((doc.documentType || doc.type || 'Document') + ' Document'),
+            fileUrl: doc.fileUrl || doc.url || '',
+            file: null,
+            persisted: true
+          };
+        })
+        : [];
+      window.currentVendorIdForDocs = isEdit ? existing.id : null;
+
+      vendorVisitedSteps = {};
+      secondaryContactCounter = 0;
+
+      var stateOptions = ['Maharashtra', 'Delhi', 'Karnataka', 'Tamil Nadu', 'Gujarat', 'Uttar Pradesh', 'Rajasthan', 'Kerala', 'Telangana', 'West Bengal'];
+
+      var modalContent = `
+        ${modalHeader(isEdit ? 'Edit Vendor' : 'Add New Vendor', isEdit ? e.id : 'Create a new supplier master record')}
+        <div class="px-6 py-4 modal-scroll">
+          ${vendorStepTabsHtml('tab-basic')}
+
+          <div id="tab-basic" class="modal-tab-panel active">
+            <div class="grid grid-cols-2 gap-3">
+              ${fld('Vendor Name *', '<input id="f_name" value="' + e.name + '" placeholder="e.g. Global Imports Inc." class="' + inputBase() + '">')}
+              ${fld('Company Name', '<input id="f_company" value="' + (e.companyName || '') + '" placeholder="Company legal name" class="' + inputBase() + '">')}
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+              ${fld('Vendor Type', '<select id="f_vendorType" class="' + inputBase() + '">' + vendorCategoryOptionsHtml(e.vendorType) + '</select>', 'Manage the list via "Manage Vendor Categories" on the vendors page')}
+              <div></div>
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+              ${fld('Email *', '<input id="f_email" type="email" value="' + e.email + '" placeholder="vendor@domain.com" class="' + inputBase() + '">')}
+              ${fld('Phone *', '<input id="f_phone" value="' + e.phone + '" placeholder="+91-XXXXXXXXXX" class="' + inputBase() + '">')}
+            </div>
+            <div>
+              ${fld('Address', '<textarea id="f_address" rows="2" class="' + inputBase() + '" placeholder="Street address">' + (e.address || '') + '</textarea>')}
+            </div>
+            <div class="grid grid-cols-3 gap-3">
+              ${fld('City', '<input id="f_city" value="' + (e.city || '') + '" placeholder="City" class="' + inputBase() + '">')}
+              ${fld('State', '<select id="f_state" class="' + inputBase() + '" onchange="updateStateCode()">' + stateOptions.map(function (s) { return '<option ' + (s === e.state ? 'selected' : '') + '>' + s + '</option>'; }).join('') + '</select>')}
+              ${fld('State Code', '<input id="f_stateCode" value="' + (e.stateCode || '27') + '" class="' + inputBase() + '" disabled>')}
+            </div>
+            ${fld('Pincode', '<input id="f_pincode" value="' + (e.pincode || '') + '" placeholder="6-digit PIN" class="' + inputBase() + '">')}
+
+            <div class="mt-4 pt-3 border-t border-gray-100">
+              <div class="flex items-center justify-between mb-2">
+                <h4 class="text-[12.5px] font-semibold text-gray-800">Secondary Contact Person</h4>
+                <button type="button" onclick="addSecondaryContactBlock()" class="text-[12px] font-semibold text-primary hover:underline flex items-center gap-1">${iconPlus()} Add Another Contact</button>
+              </div>
+              <div id="secondaryContactsWrap"></div>
+            </div>
+          </div>
+
+          <div id="tab-tax" class="modal-tab-panel">
+            <div class="grid grid-cols-2 gap-3">
+              ${fld('GSTIN', '<input id="f_gstin" value="' + (e.gstin || '') + '" placeholder="15-digit GSTIN" class="' + inputBase() + '">', 'Format: 2-digit state code + 10-digit PAN + 3-digit entity code')}
+              ${fld('PAN', '<input id="f_pan" value="' + (e.pan || '') + '" placeholder="10-digit PAN" class="' + inputBase() + '">')}
+            </div>
+            ${fld('GST Registered?', '<div class="flex items-center gap-4 mt-1"><label class="flex items-center gap-2 text-[13px]"><input type="radio" name="gstReg" value="true" ' + (e.gstRegistered ? 'checked' : '') + '> <span class="font-medium">Yes</span></label><label class="flex items-center gap-2 text-[13px]"><input type="radio" name="gstReg" value="false" ' + (!e.gstRegistered ? 'checked' : '') + '> <span class="font-medium">No</span></label></div>')}
+          </div>
+
+          <div id="tab-banking" class="modal-tab-panel">
+            <div class="grid grid-cols-2 gap-3">
+              ${fld('Bank Name', '<input id="f_bankName" value="' + (e.bankName || '') + '" placeholder="e.g. HDFC Bank" class="' + inputBase() + '">')}
+              ${fld('Account Number', '<input id="f_bankAccount" value="' + (e.bankAccount || '') + '" placeholder="Account number" class="' + inputBase() + '">')}
+            </div>
+            ${fld('IFSC Code', '<input id="f_bankIfsc" value="' + (e.bankIfsc || '') + '" placeholder="e.g. HDFC0000123" class="' + inputBase() + '">')}
+          </div>
+
+          <div id="tab-payment" class="modal-tab-panel">
+            ${fld('Payment Terms *', '<select id="f_paymentTerms" class="' + inputBase() + '"><option ' + (e.paymentTerms === 'Net 7 days' ? 'selected' : '') + '>Net 7 days</option><option ' + (e.paymentTerms === 'Net 15 days' ? 'selected' : '') + '>Net 15 days</option><option ' + (e.paymentTerms === 'Net 30 days' ? 'selected' : '') + '>Net 30 days</option><option ' + (e.paymentTerms === 'Net 45 days' ? 'selected' : '') + '>Net 45 days</option><option ' + (e.paymentTerms === 'Net 60 days' ? 'selected' : '') + '>Net 60 days</option><option ' + (e.paymentTerms === 'Advance Payment' ? 'selected' : '') + '>Advance Payment</option><option ' + (e.paymentTerms === 'Cash on Delivery' ? 'selected' : '') + '>Cash on Delivery</option></select>')}
+            ${fld('Status', '<div class="flex items-center gap-4 mt-1"><label class="flex items-center gap-2 text-[13px]"><input type="radio" name="vendorStatus" value="active" ' + (e.status === 'active' ? 'checked' : '') + '> <span class="font-medium">Active</span></label><label class="flex items-center gap-2 text-[13px]"><input type="radio" name="vendorStatus" value="inactive" ' + (e.status === 'inactive' ? 'checked' : '') + '> <span class="font-medium">Inactive</span></label></div>')}
+          </div>
+          <div id="tab-documents" class="modal-tab-panel">
+
+  <div class="mb-4">
+    <div class="text-sm font-bold text-gray-800 mb-1">
+      Vendor Documents
+    </div>
+
+    <div class="text-[11px] text-gray-500">
+      Upload vendor-related documents such as GST Certificate,
+      PAN Card, Bank Proof or Agreement.
+    </div>
   </div>
+
+  <div class="border border-gray-200 rounded-xl p-4 bg-gray-50">
+
+    ${fld(
+        'Document Type',
+        '<select id="vendor_document_type" class="' + inputBase() + '">' +
+        documentTypeOptions.map(function (t) {
+          return '<option value="' + t + '">' + t + '</option>';
+        }).join('') +
+        '</select>'
+      )}
+
+    ${fld(
+        'Document File',
+        '<input id="vendor_document_file" type="file" class="' +
+        inputBase() +
+        '">'
+      )}
+
+    <div class="flex justify-end mt-3">
+
+      <button
+        type="button"
+        onclick="addVendorDocumentFromForm()"
+        class="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-semibold text-white bg-primary hover:bg-primary-dark transition">
+
+        ${iconUpload()}
+
+        Add Document
+
+      </button>
+
+    </div>
+
+  </div>
+
+  <div class="mt-4">
+
+    <div class="text-[12px] font-bold text-gray-700 mb-2">
+      Uploaded Documents
+    </div>
+
+    <div id="vendorFormDocumentsList"
+         class="space-y-2">
+
+      <div class="text-[11px] text-gray-400">
+        No documents added yet.
+      </div>
+
+    </div>
+
+  </div>
+
 </div>
+        </div>
+        ${modalFooter(isEdit ? 'Update Vendor' : 'Save Vendor', 'onclick="saveVendor(\'' + (isEdit ? e.id : '') + '\')"')}
+      `;
 
-<script src="/assets/js/nav-sidebar.js"></script>
-<script>
-NavSidebar.init({ basePath: "", activePage: "vendor-payments", pageTitle: "Vendor Payments", user: { name: "Admin", role: "Super Admin", avatarUrl: "" } });
+      openModal(modalContent, { width: 'max-w-2xl' });
+      // The modal DOM now exists, so render the saved document list here.
+      renderVendorFormDocuments();
 
-// =============================================================
-// MOCK BACKEND (dummy data, no server needed)
-// Create / update / delete work in memory; data resets on refresh.
-// =============================================================
-var VP_API = "/mock/vendor-payments/v1";
-var VENDOR_API = "/mock/vendors";
+      // seed existing secondary contacts (edit mode)
+      (e.secondaryContacts || []).forEach(function (c) { addSecondaryContactBlock(c); });
+    }
 
-var MOCK_VENDORS = [
-  { vendorStrId: "VND-001", vendorName: "Ramesh Patil", companyName: "Patil Traders Pvt Ltd" },
-  { vendorStrId: "VND-002", vendorName: "Anita Sharma", companyName: "Sharma Steel Works" },
-  { vendorStrId: "VND-003", vendorName: "Vikram Joshi", companyName: "Joshi Office Supplies" },
-  { vendorStrId: "VND-004", vendorName: "Neha Kulkarni", companyName: "Kulkarni Print House" }
-];
-var MOCK_BILLS = [
-  { pbStrId: "PB-1001", vendorId: "VND-001", total: 47200 },
-  { pbStrId: "PB-1002", vendorId: "VND-001", total: 35400 },
-  { pbStrId: "PB-1003", vendorId: "VND-002", total: 82600 },
-  { pbStrId: "PB-1004", vendorId: "VND-002", total: 29500 },
-  { pbStrId: "PB-1005", vendorId: "VND-003", total: 64900 },
-  { pbStrId: "PB-1006", vendorId: "VND-004", total: 18880 }
-];
-var MOCK_PAYMENTS = [
-  { vpStrId: "VP-1001", vendorId: "VND-001", date: "2026-10-05", amount: 30000, mode: "NEFT", reference: "UTR1001", bankAccountName: "HDFC Bank — Current", status: "paid", notes: "Part payment", allocations: [{ billStrId: "PB-1001", amount: 30000 }] },
-  { vpStrId: "VP-1002", vendorId: "VND-002", date: "2026-10-08", amount: 50000, mode: "UPI", reference: "UPI-88231", bankAccountName: "ICICI Bank — Current", status: "cleared", notes: "", allocations: [{ billStrId: "PB-1003", amount: 50000 }] },
-  { vpStrId: "VP-1003", vendorId: "VND-003", date: "2026-10-11", amount: 20000, mode: "Cheque", reference: "CHQ-004512", bankAccountName: "HDFC Bank — Current", status: "pending", notes: "Cheque not yet cleared", allocations: [{ billStrId: "PB-1005", amount: 20000 }] },
-  { vpStrId: "VP-1004", vendorId: "VND-001", date: "2026-09-28", amount: 15000, mode: "Cash", reference: "", bankAccountName: "Petty Cash", status: "paid", notes: "", allocations: [{ billStrId: "PB-1002", amount: 15000 }] },
-  { vpStrId: "VP-1005", vendorId: "VND-004", date: "2026-09-20", amount: 8000, mode: "RTGS", reference: "RTGS-7731", bankAccountName: "HDFC Bank — Current", status: "bounced", notes: "Bounced - wrong account", allocations: [{ billStrId: "PB-1006", amount: 8000 }] }
-];
-var mockSeq = 1006;
+    // State code updater
+    function updateStateCode() {
+      var state = document.getElementById('f_state').value;
+      var stateCodeMap = {
+        'Maharashtra': '27',
+        'Delhi': '07',
+        'Karnataka': '29',
+        'Tamil Nadu': '33',
+        'Gujarat': '24',
+        'Uttar Pradesh': '09',
+        'Rajasthan': '08',
+        'Kerala': '32',
+        'Telangana': '36',
+        'West Bengal': '19',
+        'Andhra Pradesh': '28',
+        'Bihar': '10',
+        'Chhattisgarh': '22',
+        'Goa': '30',
+        'Haryana': '06',
+        'Himachal Pradesh': '02',
+        'Jharkhand': '20',
+        'Madhya Pradesh': '23',
+        'Odisha': '21',
+        'Punjab': '03',
+        'Uttarakhand': '05'
+      };
+      document.getElementById('f_stateCode').value = stateCodeMap[state] || '';
+    }
+    // AddVendorDocument
+    function renderVendorFormDocuments() {
+      var container = document.getElementById('vendorFormDocumentsList');
+      if (!container) return;
 
-function mockClone(x) { return JSON.parse(JSON.stringify(x)); }
-function mockFail(msg) { throw new Error(msg); }
-function mockVendor(id) { return MOCK_VENDORS.find(function (v) { return v.vendorStrId === id; }); }
-function mockCounts(p) { return p.status === "paid" || p.status === "cleared"; }
+      var docs = window.vendorFormDocuments || [];
+      if (!docs.length) {
+        container.innerHTML = '<div class="text-[11px] text-gray-400">No documents uploaded yet.</div>';
+        return;
+      }
 
-function mockBalance(bill, excludeVp) {
-  var used = 0;
-  MOCK_PAYMENTS.forEach(function (p) {
-    if (p.vpStrId === excludeVp || !mockCounts(p)) return;
-    p.allocations.forEach(function (a) { if (a.billStrId === bill.pbStrId) used += a.amount; });
-  });
-  return Math.round((bill.total - used) * 100) / 100;
-}
+      container.innerHTML = docs.map(function (doc, index) {
+        var typeLabel = doc.type || doc.documentType || 'Other';
+        var fileName = doc.fileName || (typeLabel + ' Document');
+        return `
+          <div class="flex items-center gap-3 p-3 bg-white border border-gray-200 rounded-lg">
+            <div class="doc-icon">${iconDoc()}</div>
+            <div class="flex-1 min-w-0">
+              <div class="text-[12px] font-semibold text-gray-800">${typeLabel}</div>
+              <div class="text-[11px] text-gray-400 truncate">${fileName}</div>
+            </div>
+            <div class="flex items-center gap-1">
+              <button type="button" onclick="viewVendorFormDocument(${index})" class="btn-icon-action" title="View">${iconEye()}</button>
+              <button type="button" onclick="removeVendorFormDocument(${index})" class="w-7 h-7 rounded-lg flex items-center justify-center text-gray-400 hover:text-red-600 hover:bg-red-50 transition" title="Remove">${iconX()}</button>
+            </div>
+          </div>`;
+      }).join('');
+    }
 
-function mockView(p) {
-  var v = mockVendor(p.vendorId), out = mockClone(p);
-  out.vpNumber = p.vpStrId;
-  out.vendorName = v ? v.vendorName : "";
-  out.allocations.forEach(function (a) { a.billNumber = a.billStrId; });
-  return out;
-}
+    function viewVendorFormDocument(index) {
+      var docs = window.vendorFormDocuments || [];
+      var doc = docs[index];
+      if (!doc || !doc.fileUrl) {
+        showToast('Document URL is not available', 'info');
+        return;
+      }
+      window.open(resolveViewableUrl(doc.fileUrl), '_blank');
+    }
 
-function mockValidate(b, editingId) {
-  if (!mockVendor(b.vendorId)) mockFail("Vendor not found.");
-  if (!b.date) mockFail("Date is required.");
-  if (!(b.amount > 0)) mockFail("Amount must be greater than 0.");
-  if (PAY_MODES.indexOf(b.mode) === -1) mockFail("Invalid payment mode.");
-  b.status = b.status || "paid";
-  var seen = {}, total = 0;
-  (b.allocations || []).forEach(function (a) {
-    var bill = MOCK_BILLS.find(function (x) { return x.pbStrId === a.billStrId; });
-    if (!bill) mockFail("Bill " + a.billStrId + " not found.");
-    if (bill.vendorId !== b.vendorId) mockFail(a.billStrId + " does not belong to this vendor.");
-    if (seen[a.billStrId]) mockFail("The same bill is allocated more than once.");
-    seen[a.billStrId] = true;
-    if (mockCounts(b) && a.amount > mockBalance(bill, editingId) + 0.005) mockFail("Allocation for " + a.billStrId + " exceeds its balance.");
-    total += a.amount;
-  });
-  if (total > b.amount + 0.005) mockFail("Total allocated exceeds the payment amount.");
-}
+    function removeVendorFormDocument(index) {
+      var docs = window.vendorFormDocuments || [];
+      var doc = docs[index];
+      if (!doc) return;
 
-// Same signature as the real apiRequest, so the rest of the page is unchanged.
-async function apiRequest(method, url, body) {
-  await new Promise(function (r) { setTimeout(r, 250); });
-  var parts = url.split("?"), path = parts[0], qs = new URLSearchParams(parts[1] || ""), m;
+      if (doc.fileUrl && doc.fileUrl.indexOf('blob:') === 0) {
+        try { URL.revokeObjectURL(doc.fileUrl); } catch (e) {}
+      }
+      docs.splice(index, 1);
+      window.vendorFormDocuments = docs;
+      renderVendorFormDocuments();
+      showToast('Document removed', 'success');
+    }
 
-  if (path === VENDOR_API + "/vendor-list") return mockClone(MOCK_VENDORS);
-  if (path.indexOf(VP_API) !== 0) mockFail("Unknown mock endpoint: " + path);
-  var ep = path.slice(VP_API.length);
+    function addVendorDocumentFromForm() {
+      var typeInput = document.getElementById('vendor_document_type');
+      var fileInput = document.getElementById('vendor_document_file');
+      var type = typeInput ? typeInput.value : '';
+      var file = fileInput && fileInput.files ? fileInput.files[0] : null;
 
-  if (method === "GET" && ep === "/get-all-vendor-payments") {
-    var mode = (qs.get("mode") || "").toLowerCase(), vid = qs.get("vendorId") || "", q = (qs.get("search") || "").toLowerCase();
-    return MOCK_PAYMENTS.map(mockView).filter(function (p) {
-      return (!mode || p.mode.toLowerCase() === mode) && (!vid || p.vendorId === vid) &&
-        (!q || [p.vpNumber, p.vendorName, p.reference].join(" ").toLowerCase().indexOf(q) !== -1);
-    }).sort(function (a, b) { return a.date < b.date ? 1 : -1; });
-  }
-  if (method === "GET" && ep === "/stats") {
-    var ym = todayStr().slice(0, 7), s = { totalPayments: MOCK_PAYMENTS.length, totalPaid: 0, thisMonth: 0, pendingAmount: 0 };
-    MOCK_PAYMENTS.forEach(function (p) {
-      if (mockCounts(p)) { s.totalPaid += p.amount; if (p.date.slice(0, 7) === ym) s.thisMonth += p.amount; }
-      if (p.status === "pending") s.pendingAmount += p.amount;
-    });
-    return s;
-  }
-  if (method === "GET" && (m = ep.match(/^\/vendor-bills\/(.+)$/))) {
-    var vendorId = decodeURIComponent(m[1]), excl = qs.get("excludeVpStrId") || "";
-    return MOCK_BILLS.filter(function (b) { return b.vendorId === vendorId; })
-      .map(function (b) { return { pbStrId: b.pbStrId, pbNumber: b.pbStrId, balance: mockBalance(b, excl) }; })
-      .filter(function (b) { return b.balance > 0; });
-  }
-  if (method === "POST" && ep === "/create-vendor-payment") {
-    mockValidate(body, "");
-    var np = mockClone(body); np.vpStrId = "VP-" + (mockSeq++);
-    MOCK_PAYMENTS.push(np);
-    return mockView(np);
-  }
-  if (method === "PUT" && (m = ep.match(/^\/update-vendor-payment\/(.+)$/))) {
-    var id = decodeURIComponent(m[1]), idx = MOCK_PAYMENTS.findIndex(function (p) { return p.vpStrId === id; });
-    if (idx === -1) mockFail("Vendor payment not found.");
-    mockValidate(body, id);
-    var up = mockClone(body); up.vpStrId = id;
-    MOCK_PAYMENTS[idx] = up;
-    return mockView(up);
-  }
-  if (method === "DELETE" && (m = ep.match(/^\/delete-vendor-payment\/(.+)$/))) {
-    var did = decodeURIComponent(m[1]), di = MOCK_PAYMENTS.findIndex(function (p) { return p.vpStrId === did; });
-    if (di === -1) mockFail("Vendor payment not found.");
-    MOCK_PAYMENTS.splice(di, 1);
-    return null;
-  }
-  mockFail("Unsupported mock request: " + method + " " + ep);
-}
+      if (!file) {
+        showToast('Please choose a file to upload', 'error');
+        return;
+      }
 
-// =============================================================
-// ICONS + HELPERS
-// =============================================================
-function iconPlus() { return '<i class="fa-solid fa-plus"></i>'; }
-function iconEdit() { return '<i class="fa-solid fa-pen"></i>'; }
-function iconTrash() { return '<i class="fa-solid fa-trash"></i>'; }
-function iconEye() { return '<i class="fa-solid fa-eye"></i>'; }
-function iconX() { return '<i class="fa-solid fa-xmark"></i>'; }
-function iconSearch() { return '<i class="fa-solid fa-magnifying-glass"></i>'; }
-function iconSave() { return '<i class="fa-solid fa-floppy-disk"></i>'; }
-function iconPrint() { return '<i class="fa-solid fa-print"></i>'; }
-function iconMoney() { return '<i class="fa-solid fa-money-check-dollar"></i>'; }
+      var normalized = normalizeDocType(type);
+      if (!normalized) {
+        showToast('Please choose a valid document type', 'error');
+        return;
+      }
 
-function E(s) {
-  if (s === null || s === undefined) return '';
-  return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
-}
-function money(n) { return '₹' + Number(n || 0).toLocaleString('en-IN'); }
-function round2(n) { return Math.round((Number(n) || 0) * 100) / 100; }
-function normDate(d) {
-  if (Array.isArray(d)) return d[0] + '-' + String(d[1]).padStart(2, '0') + '-' + String(d[2]).padStart(2, '0');
-  return d || '';
-}
-function todayStr() {
-  var d = new Date();
-  return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
-}
+      window.vendorFormDocuments = window.vendorFormDocuments || [];
+      window.vendorFormDocuments.push({
+        id: null,
+        type: type,
+        fileName: file.name,
+        fileUrl: URL.createObjectURL(file),
+        file: file,
+        persisted: false
+      });
 
-function showToast(message, kind) {
-  kind = kind || 'success';
-  var colors = { success: 'bg-green-600', info: 'bg-primary', warning: 'bg-amber-600', error: 'bg-red-600' };
-  var el = document.createElement('div');
-  el.className = 'toast ' + colors[kind] + ' text-white text-sm font-semibold px-4 py-3 rounded-lg shadow-lg flex items-center gap-2 max-w-xs';
-  el.innerHTML = '<span>' + E(message) + '</span>';
-  document.getElementById('toastWrap').appendChild(el);
-  setTimeout(function () {
-    el.style.transition = 'opacity .3s'; el.style.opacity = '0';
-    setTimeout(function () { el.remove(); }, 300);
-  }, kind === 'error' ? 4500 : 2600);
-}
+      if (fileInput) fileInput.value = '';
+      renderVendorFormDocuments();
+      showToast('Document added. Click Save/Update Vendor to attach it.', 'info');
+    }
 
-function openModal(innerHtml, opts) {
-  opts = opts || {};
-  document.getElementById('modalRoot').innerHTML =
-    '<div class="fixed inset-0 z-[100] flex items-center justify-center p-4" id="modalOverlay">' +
-    '<div class="absolute inset-0 bg-black/40 backdrop-blur-[2px]" id="modalBackdrop"></div>' +
-    '<div class="relative bg-white rounded-2xl shadow-2xl w-full ' + (opts.width || 'max-w-3xl') + ' max-h-[92vh] overflow-hidden animate-modal">' + innerHtml + '</div></div>';
-  document.getElementById('modalBackdrop').addEventListener('click', closeModal);
-  document.body.style.overflow = 'hidden';
-}
-function closeModal() {
-  document.getElementById('modalRoot').innerHTML = '';
-  document.body.style.overflow = '';
-  formBills = []; editingVpId = '';
-}
-function modalHeader(title, subtitle) {
-  return '<div class="flex items-start justify-between px-6 py-5 border-b border-gray-100 sticky top-0 bg-white z-10"><div>' +
-    '<h3 class="text-lg font-bold text-gray-900">' + E(title) + '</h3>' +
-    (subtitle ? '<p class="text-xs text-gray-500 mt-0.5">' + E(subtitle) + '</p>' : '') + '</div>' +
-    '<button onclick="closeModal()" class="w-8 h-8 rounded-lg hover:bg-gray-100 flex items-center justify-center text-gray-400 hover:text-gray-700 transition">' + iconX() + '</button></div>';
-}
-function modalFooter(saveLabel, onSaveAttr, extraBtns, danger) {
-  var cls = danger ? 'bg-red-600 hover:bg-red-700' : 'bg-primary hover:bg-primary-dark';
-  return '<div class="flex items-center justify-between gap-2 px-6 py-2 border-t border-gray-100 bg-gray-50 rounded-b-2xl sticky bottom-0"><div>' + (extraBtns || '') + '</div><div class="flex gap-2">' +
-    '<button onclick="closeModal()" class="px-4 py-2 rounded-lg text-sm font-semibold text-gray-600 border border-gray-200 hover:bg-white transition">Cancel</button>' +
-    '<button ' + onSaveAttr + ' class="px-4 py-2 rounded-lg text-sm font-semibold text-white ' + cls + ' transition shadow-sm flex items-center gap-1.5 disabled:opacity-60 disabled:cursor-not-allowed">' +
-    (danger ? iconTrash() : iconSave()) + ' ' + saveLabel + '</button></div></div>';
-}
-function fld(label, inputHtml, hint) {
-  return '<div class="mb-3"><label class="form-label">' + label + '</label>' + inputHtml + (hint ? '<div class="form-hint">' + hint + '</div>' : '') + '</div>';
-}
+    // =============================================================
+    // SAVE / DELETE VENDOR
+    // =============================================================
 
-document.addEventListener('click', function (e) {
-  if (!e.target.closest('[data-dd-trigger]')) document.querySelectorAll('[data-dd-menu]').forEach(function (m) { m.classList.add('hidden'); });
-});
-function toggleFilterDD() {
-  var menu = document.getElementById('filterDD'), hidden = menu.classList.contains('hidden');
-  document.querySelectorAll('[data-dd-menu]').forEach(function (m) { m.classList.add('hidden'); });
-  if (hidden) menu.classList.remove('hidden');
-}
+    function saveVendor(existingId) {
+      var name = document.getElementById('f_name') ? document.getElementById('f_name').value.trim() : '';
+      var companyName = document.getElementById('f_company') ? document.getElementById('f_company').value.trim() : '';
+      var vendorType = document.getElementById('f_vendorType') ? document.getElementById('f_vendorType').value : '';
+      var email = document.getElementById('f_email') ? document.getElementById('f_email').value.trim() : '';
+      var phone = document.getElementById('f_phone') ? document.getElementById('f_phone').value.trim() : '';
+      var address = document.getElementById('f_address') ? document.getElementById('f_address').value.trim() : '';
+      var city = document.getElementById('f_city') ? document.getElementById('f_city').value.trim() : '';
+      var state = document.getElementById('f_state') ? document.getElementById('f_state').value : 'Maharashtra';
+      var stateCode = document.getElementById('f_stateCode') ? document.getElementById('f_stateCode').value : '27';
+      var pincode = document.getElementById('f_pincode') ? document.getElementById('f_pincode').value.trim() : '';
+      var gstin = document.getElementById('f_gstin') ? document.getElementById('f_gstin').value.trim().toUpperCase() : '';
+      var pan = document.getElementById('f_pan') ? document.getElementById('f_pan').value.trim().toUpperCase() : '';
+      var bankName = document.getElementById('f_bankName') ? document.getElementById('f_bankName').value.trim() : '';
+      var bankAccount = document.getElementById('f_bankAccount') ? document.getElementById('f_bankAccount').value.trim() : '';
+      var bankIfsc = document.getElementById('f_bankIfsc') ? document.getElementById('f_bankIfsc').value.trim().toUpperCase() : '';
+      var paymentTerms = document.getElementById('f_paymentTerms') ? document.getElementById('f_paymentTerms').value : 'Net 15 days';
+      var gstRegRadio = document.querySelector('input[name="gstReg"]:checked');
+      var gstRegistered = gstRegRadio ? gstRegRadio.value === 'true' : false;
+      var statusRadio = document.querySelector('input[name="vendorStatus"]:checked');
+      var status = statusRadio ? statusRadio.value : 'active';
+      var secondaryContacts = collectSecondaryContacts();
 
-function statusBadge(status) {
-  var map = { paid: 'badge-green', pending: 'badge-amber', bounced: 'badge-red', cleared: 'badge-blue' };
-  var dot = { paid: 'badge-dot-green', pending: 'badge-dot-amber', bounced: 'badge-dot-red', cleared: 'badge-dot-blue' };
-  var s = String(status || '').toLowerCase();
-  return '<span class="badge ' + (map[s] || 'badge-gray') + '"><span class="badge-dot ' + (dot[s] || 'badge-dot-gray') + '"></span>' + E(s.charAt(0).toUpperCase() + s.slice(1)) + '</span>';
-}
-function modeBadge(mode) {
-  var colors = { 'Bank Transfer': 'badge-blue', 'NEFT': 'badge-blue', 'RTGS': 'badge-blue', 'UPI': 'badge-purple', 'Cheque': 'badge-amber', 'Cash': 'badge-green' };
-  return '<span class="badge ' + (colors[mode] || 'badge-gray') + '">' + E(mode) + '</span>';
-}
-function rowActionsHtml(editFn, delFn, viewFn, printFn) {
-  return '<div class="flex gap-1">' +
-    '<button onclick="' + viewFn + '" class="btn-icon-action" title="View">' + iconEye() + '</button>' +
-    '<button onclick="' + printFn + '" class="btn-icon-action" title="Print">' + iconPrint() + '</button>' +
-    '<button onclick="' + editFn + '" class="btn-icon-action" title="Edit">' + iconEdit() + '</button>' +
-    '<button onclick="' + delFn + '" class="btn-icon-action danger" title="Delete">' + iconTrash() + '</button></div>';
-}
-function panelWrap(titleHtml, bodyHtml, extraHead) {
-  return '<div class="bg-white border border-[#6da84c] rounded-xl shadow-sm overflow-hidden">' +
-    '<div class="flex items-center justify-between gap-3 flex-wrap px-5 py-4 border-b border-gray-100"><div class="font-bold text-[14.5px] text-gray-800 flex items-center gap-2">' + titleHtml + '</div>' + (extraHead || '') + '</div>' +
-    '<div>' + bodyHtml + '</div></div>';
-}
-function tableHtml(cols, rowsHtml) {
-  var h = cols.map(function (c) { return '<th class="text-left text-[11px] font-bold uppercase tracking-wide text-gray-500 px-4 py-3 whitespace-nowrap">' + c + '</th>'; }).join('');
-  return '<div class="overflow-auto h-[370px]"><table class="w-full text-[13px]"><thead class="sticky top-0"><tr class="bg-gray-200 border border-[#6da84c]">' + h + '</tr></thead><tbody>' + rowsHtml + '</tbody></table></div>';
-}
+      if (!name || !email || !phone) {
+        showToast('Please fill all required fields (Name, Email, Phone)', 'error');
+        return;
+      }
 
-// =============================================================
-// STATE
-// =============================================================
-var vendors = [], payments = [], loadState = 'loading', loadError = '';
-var formBills = [], editingVpId = '';
-var BANK_ACCOUNTS = ['HDFC Bank — Current', 'ICICI Bank — Current', 'Petty Cash'];
-var PAY_MODES = ['Bank Transfer', 'NEFT', 'RTGS', 'UPI', 'Cheque', 'Cash'];
+      var docsFromForm = (window.vendorFormDocuments || []).map(function (d, i) {
+        return {
+          id: d.id || ('DOC-' + Date.now() + '-' + i),
+          documentType: d.type || d.documentType || 'Other',
+          fileName: d.fileName || 'Document',
+          fileUrl: d.fileUrl || ''
+        };
+      });
 
-// =============================================================
-// LOADING DATA
-// =============================================================
-async function loadVendors() {
-  var list = await apiRequest('GET', VENDOR_API + '/vendor-list');
-  vendors = (Array.isArray(list) ? list : []).map(function (v) { return { id: v.vendorStrId, name: v.vendorName, company: v.companyName }; });
-  var sel = document.getElementById('filterVendor'), cur = sel.value || 'all';
-  sel.innerHTML = '<option value="all">All Vendors</option>' + vendors.map(function (v) { return '<option value="' + E(v.id) + '">' + E(v.name) + '</option>'; }).join('');
-  sel.value = cur; if (sel.value !== cur) sel.value = 'all';
-}
+      var fields = {
+        name: name,
+        companyName: companyName,
+        vendorType: vendorType,
+        email: email,
+        phone: phone,
+        address: address,
+        city: city,
+        state: state,
+        stateCode: stateCode,
+        pincode: pincode,
+        gstin: gstin,
+        pan: pan,
+        gstRegistered: gstRegistered,
+        bankName: bankName,
+        bankAccount: bankAccount,
+        bankIfsc: bankIfsc,
+        paymentTerms: paymentTerms,
+        status: status,
+        secondaryContacts: secondaryContacts,
+        documents: docsFromForm
+      };
 
-var loadSeq = 0;
-async function loadPayments() {
-  var seq = ++loadSeq, q = [];
-  var mode = document.getElementById('filterMode').value, vendor = document.getElementById('filterVendor').value;
-  var searchEl = document.getElementById('searchInput'), search = searchEl ? searchEl.value.trim() : '';
-  if (mode && mode !== 'all') q.push('mode=' + encodeURIComponent(mode));
-  if (vendor && vendor !== 'all') q.push('vendorId=' + encodeURIComponent(vendor));
-  if (search) q.push('search=' + encodeURIComponent(search));
-  try {
-    var data = await apiRequest('GET', VP_API + '/get-all-vendor-payments' + (q.length ? '?' + q.join('&') : ''));
-    if (seq !== loadSeq) return;
-    payments = (Array.isArray(data) ? data : []).map(function (p) { p.date = normDate(p.date); p.allocations = p.allocations || []; return p; });
-    loadState = 'ready';
-  } catch (err) {
-    if (seq !== loadSeq) return;
-    payments = []; loadState = 'error'; loadError = err.message;
-  }
-  renderPayments();
-}
+      if (existingId) {
+        var idx = vendors.findIndex(function (x) { return x.id === existingId; });
+        if (idx >= 0) vendors[idx] = Object.assign({}, vendors[idx], fields);
+      } else {
+        var newId = nextVendorId();
+        vendors.unshift(Object.assign({
+          id: newId,
+          outstanding: 0,
+          createdAt: new Date().toISOString().slice(0, 10),
+          color: colorForVendorId(newId)
+        }, fields));
+      }
 
-async function loadStats() {
-  try {
-    var s = await apiRequest('GET', VP_API + '/stats');
-    document.getElementById('totalPayments').textContent = s.totalPayments;
-    document.getElementById('totalPaid').textContent = money(s.totalPaid);
-    document.getElementById('thisMonth').textContent = money(s.thisMonth);
-    document.getElementById('pendingAmount').textContent = money(s.pendingAmount);
-  } catch (err) { console.error('Stats failed', err); }
-}
-async function refreshAll() { await Promise.all([loadPayments(), loadStats()]); }
+      showToast(existingId ? 'Vendor updated successfully' : 'Vendor added successfully', 'success');
+      closeModal();
+      renderVendors();
+    }
 
-// =============================================================
-// TABLE + PAGINATION
-// =============================================================
-var currentPayPage = 1, currentPayPageSize = 25;
+    function delVendor(id) {
+      var v = vendors.find(function (x) { return x.id === id; });
+      if (!v) return;
 
-function setPayPageSize(value) {
-  var size = parseInt(value, 10);
-  currentPayPageSize = [10, 25, 50, 100].indexOf(size) !== -1 ? size : 25;
-  currentPayPage = 1; renderPayments();
-}
-function changePayPage(page) {
-  var totalPages = Math.max(1, Math.ceil(payments.length / currentPayPageSize));
-  currentPayPage = Math.min(Math.max(1, page), totalPages); renderPayments();
-}
-function payPaginationHtml(total) {
-  var pages = Math.max(1, Math.ceil(total / currentPayPageSize));
-  if (currentPayPage > pages) currentPayPage = pages;
-  var start = total === 0 ? 0 : ((currentPayPage - 1) * currentPayPageSize) + 1, end = Math.min(currentPayPage * currentPayPageSize, total);
-  var h = '<div class="flex items-center justify-between gap-3 flex-wrap px-5 py-3 border-t border-gray-200"><div class="text-[11px] text-gray-500">Showing ' + start + '–' + end + ' of ' + total + '</div><div class="flex items-center gap-1">';
-  h += '<button type="button" onclick="changePayPage(' + (currentPayPage - 1) + ')" ' + (currentPayPage === 1 ? 'disabled' : '') + ' class="px-2.5 py-1 text-[11px] border rounded-lg ' + (currentPayPage === 1 ? 'text-gray-300 cursor-not-allowed' : 'text-gray-600 hover:bg-gray-50') + '">Previous</button>';
-  var from = Math.max(1, currentPayPage - 2), to = Math.min(pages, from + 4); from = Math.max(1, to - 4);
-  for (var i = from; i <= to; i++) h += '<button type="button" onclick="changePayPage(' + i + ')" class="px-2.5 py-1 text-[11px] border rounded-lg ' + (i === currentPayPage ? 'bg-primary text-white border-primary' : 'text-gray-600 hover:bg-gray-50') + '">' + i + '</button>';
-  h += '<button type="button" onclick="changePayPage(' + (currentPayPage + 1) + ')" ' + (currentPayPage === pages ? 'disabled' : '') + ' class="px-2.5 py-1 text-[11px] border rounded-lg ' + (currentPayPage === pages ? 'text-gray-300 cursor-not-allowed' : 'text-gray-600 hover:bg-gray-50') + '">Next</button></div></div>';
-  return h;
-}
+      var modalContent = `
+        ${modalHeader('Delete Vendor', v.name)}
+        <div class="px-6 py-4 text-sm text-gray-600">
+          <p>Are you sure you want to permanently delete <b class="text-gray-800">${v.name}</b>?</p>
+          <p class="text-gray-400 text-[12px] mt-1">This action cannot be undone. All associated transactions will be affected.</p>
+          ${v.outstanding > 0 ? '<p class="text-amber-600 text-[12px] mt-2">This vendor has outstanding balance of ' + money(v.outstanding) + '</p>' : ''}
+        </div>
+        ${modalFooter('Delete', 'onclick="confirmDeleteVendor(\'' + id + '\')"', '', true)}
+      `;
+      openModal(modalContent, { width: 'max-w-md' });
+    }
 
-function renderPayments() {
-  var pages = Math.max(1, Math.ceil(payments.length / currentPayPageSize));
-  if (currentPayPage > pages) currentPayPage = pages;
-  var paged = payments.slice((currentPayPage - 1) * currentPayPageSize, currentPayPage * currentPayPageSize), rows = '';
+    function confirmDeleteVendor(id) {
+      vendors = vendors.filter(function (x) { return x.id !== id; });
+      closeModal();
+      renderVendors();
+      showToast('Vendor deleted successfully', 'warning');
+    }
 
-  if (loadState === 'loading') {
-    rows = '<tr><td colspan="8" class="text-center py-10 text-gray-400 text-sm">Loading vendor payments…</td></tr>';
-  } else if (loadState === 'error') {
-    rows = '<tr><td colspan="8" class="text-center py-10 text-red-500 text-sm">' + E(loadError) + '<br><button onclick="refreshAll()" class="mt-2 text-primary font-semibold hover:underline">Retry</button></td></tr>';
-  } else if (payments.length === 0) {
-    rows = '<tr><td colspan="8" class="text-center py-10 text-gray-400 text-sm"><div class="flex justify-center mb-2 empty-icon-svg">' + iconMoney() + '</div>No vendor payments found. Click "Record Payment" to add one.</td></tr>';
-  } else {
-    rows = paged.map(function (p) {
-      var id = E(p.vpStrId);
-      var bills = p.allocations.map(function (a) { return E(a.billNumber || a.billStrId); }).join(', ') || '—';
-      return '<tr class="border-b border-gray-400 table-row-hover">' +
-        '<td class="px-4 py-3"><div class="font-semibold text-gray-800">' + E(p.vpNumber) + '</div><div class="text-[11.5px] text-gray-400 font-mono">' + E(p.date) + '</div></td>' +
-        '<td class="px-4 py-3 text-gray-600">' + E(p.vendorName) + '</td>' +
-        '<td class="px-4 py-3 font-mono font-semibold text-primary">' + money(p.amount) + '</td>' +
-        '<td class="px-4 py-3">' + modeBadge(p.mode) + '</td>' +
-        '<td class="px-4 py-3 font-mono text-[12px] text-gray-500">' + (E(p.reference) || '—') + '</td>' +
-        '<td class="px-4 py-3 text-[12px] text-gray-500">' + bills + '</td>' +
-        '<td class="px-4 py-3">' + statusBadge(p.status) + '</td>' +
-        '<td class="px-4 py-3">' + rowActionsHtml("editPayment('" + id + "')", "delPayment('" + id + "')", "viewReceipt('" + id + "')", "printReceipt('" + id + "')") + '</td></tr>';
-    }).join('');
-  }
+    // =============================================================
+    // SEARCH
+    // =============================================================
 
-  var sizeSel = '<div class="flex items-center gap-2"><span class="text-[11px] text-gray-400">Show:</span><select onchange="setPayPageSize(this.value)" class="text-[12px] border border-[#6da84c] rounded-lg px-2 py-1 bg-white outline-none">' +
-    [10, 25, 50, 100].map(function (n) { return '<option value="' + n + '" ' + (currentPayPageSize === n ? 'selected' : '') + '>' + n + '</option>'; }).join('') + '</select></div>';
+    (function addSearchToTopbar() {
+      var searchContainer = document.querySelector('.app-main header');
+      if (searchContainer) {
+        var searchHtml = `
+          <div class="hidden sm:flex flex-1 max-w-[420px] relative ml-4">
+            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">${iconSearch()}</span>
+            <input type="text" id="searchInput" placeholder="Search vendors by name, company, phone…"
+              onkeyup="filterVendors()"
+              class="w-full border border-gray-200 bg-gray-50 focus:bg-white rounded-lg pl-9 pr-3 py-2 text-[13px] outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition placeholder:text-gray-400">
+          </div>
+        `;
+        var headerContent = searchContainer.innerHTML;
+        var hamburgerIndex = headerContent.indexOf('lg:hidden');
+        if (hamburgerIndex !== -1) {
+          var firstDivEnd = headerContent.indexOf('</div>', hamburgerIndex) + 6;
+          var before = headerContent.substring(0, firstDivEnd);
+          var after = headerContent.substring(firstDivEnd);
+          searchContainer.innerHTML = before + searchHtml + after;
+        }
+      }
+    })();
 
-  document.getElementById('paymentsPanel').innerHTML = panelWrap(
-    'All Vendor Payments <span class="text-[11px] font-bold bg-primary-soft text-primary-dark px-2 py-0.5 rounded-full ml-1">' + payments.length + '</span>',
-    tableHtml(['Payment #', 'Vendor', 'Amount', 'Mode', 'Reference', 'Bills', 'Status', 'Actions'], rows) + payPaginationHtml(payments.length), sizeSel);
-}
+    // =============================================================
+    // INIT
+    // =============================================================
 
-// =============================================================
-// FILTERS
-// =============================================================
-var filterTimer = null;
-function filterPayments() {
-  currentPayPage = 1; updateFilterBadge();
-  clearTimeout(filterTimer); filterTimer = setTimeout(loadPayments, 300);
-}
-function updateFilterBadge() {
-  var n = 0;
-  if (document.getElementById('filterMode').value !== 'all') n++;
-  if (document.getElementById('filterVendor').value !== 'all') n++;
-  var b = document.getElementById('filterBadge'); b.textContent = n; b.classList.toggle('hidden', n === 0);
-}
-function clearFilters() {
-  document.getElementById('filterMode').value = 'all';
-  document.getElementById('filterVendor').value = 'all';
-  var s = document.getElementById('searchInput'); if (s) s.value = '';
-  currentPayPage = 1; updateFilterBadge(); loadPayments(); toggleFilterDD();
-}
-function findPayment(id) { return payments.find(function (x) { return x.vpStrId === id; }); }
+    function initVendorsPage() {
+      loadVendorCategories();
+      renderVendors();
+      populateVendorTypeFilter();
 
-// =============================================================
-// VIEW / PRINT RECEIPT
-// =============================================================
-function viewReceipt(id) {
-  var p = findPayment(id); if (!p) return;
-  var alloc = p.allocations.map(function (a) {
-    return '<tr><td class="px-2 py-1.5 text-[13px]">' + E(a.billNumber || a.billStrId) + '</td><td class="px-2 py-1.5 text-[13px] font-mono text-right">' + money(a.amount) + '</td></tr>';
-  }).join('') || '<tr><td colspan="2" class="text-center py-3 text-gray-400 text-[12px]">No bill allocation.</td></tr>';
-  var footMsg = p.status === 'paid' ? 'Payment processed successfully.' : (p.status === 'bounced' ? 'Payment bounced.' : 'Payment pending clearance.');
+      console.log('🏢 Vendors Module Loaded Successfully');
+      console.log('📊 Total Vendors:', vendors.length);
+      console.log('✅ Active Vendors:', vendors.filter(function (v) { return v.status === 'active'; }).length);
+      console.log('💰 Total Payable:', vendors.reduce(function (sum, v) { return sum + v.outstanding; }, 0));
+      console.log('🏷️ Vendor Categories:', vendorCategories.length);
+    }
 
-  openModal(modalHeader('Vendor Payment Receipt — ' + p.vpNumber, p.vendorName) +
-    '<div class="px-6 py-4 modal-scroll"><div class="receipt-preview">' +
-    '<div class="receipt-header"><div><div class="receipt-company-name">Kunash Media Pvt. Ltd.</div><div class="receipt-company-details">401, Creative Hub, BKC, Mumbai - 400051<br>GSTIN: 27AABCU1234D1ZP | Phone: +91-9876543210</div></div><div style="text-align:right;"><div class="receipt-title">PAYMENT RECEIPT</div></div></div>' +
-    '<div class="receipt-meta"><div><div class="meta-label">Paid To</div><div class="meta-value">' + E(p.vendorName) + '</div></div><div style="text-align:right;">' +
-    '<div><span class="meta-label">Payment #</span> <span class="meta-value">' + E(p.vpNumber) + '</span></div>' +
-    '<div><span class="meta-label">Date</span> <span class="meta-value">' + E(p.date) + '</span></div>' +
-    '<div><span class="meta-label">Mode</span> <span class="meta-value">' + E(p.mode) + '</span></div></div></div>' +
-    '<table class="receipt-table"><thead><tr><th>Bill #</th><th style="text-align:right;">Amount Paid</th></tr></thead><tbody>' + alloc + '</tbody></table>' +
-    '<div class="receipt-total">Total Paid: ' + money(p.amount) + '</div>' +
-    '<div class="mt-3 grid grid-cols-2 gap-3 text-[13px]"><div><span class="text-gray-500">Reference:</span> <b>' + (E(p.reference) || '—') + '</b></div><div><span class="text-gray-500">Paid From:</span> <b>' + (E(p.bankAccountName) || '—') + '</b></div></div>' +
-    (p.notes ? '<div class="mt-2 p-2 bg-gray-50 rounded text-[12px] text-gray-600"><b>Notes:</b> ' + E(p.notes) + '</div>' : '') +
-    '<div class="receipt-footer"><p>This is a system generated payment receipt. | ' + footMsg + '</p></div></div></div>' +
-    modalFooter('Close', 'onclick="closeModal()"', '<button onclick="window.print()" class="text-[12px] font-semibold text-gray-600 flex items-center gap-1.5 px-3 py-2 rounded-lg border border-gray-200 hover:bg-white transition">' + iconPrint() + ' Print</button>'),
-    { width: 'max-w-2xl' });
-}
-function printReceipt(id) {
-  if (!document.querySelector('.receipt-preview')) viewReceipt(id);
-  setTimeout(function () { window.print(); }, 300);
-}
+    initVendorsPage();
 
-// =============================================================
-// ADD / EDIT PAYMENT
-// =============================================================
-function openAddPayment() { openPaymentModal(null); }
-function editPayment(id) { var p = findPayment(id); if (p) openPaymentModal(p); }
-function billLabel(b) { return (b.pbNumber || b.pbStrId) + ' (Bal: ' + money(b.balance) + ')'; }
+  </script>
 
-function billOptionsHtml(selectedId, fallbackNumber) {
-  var html = formBills.map(function (b) { return '<option value="' + E(b.pbStrId) + '" ' + (b.pbStrId === selectedId ? 'selected' : '') + '>' + E(billLabel(b)) + '</option>'; }).join('');
-  if (selectedId && !formBills.some(function (b) { return b.pbStrId === selectedId; })) {
-    html = '<option value="' + E(selectedId) + '" selected>' + E(fallbackNumber || selectedId) + '</option>' + html;
-  }
-  return html;
-}
-function allocRowHtml(billId, amount, fallbackNumber) {
-  return '<tr class="border-b border-gray-100 line-item-row">' +
-    '<td class="px-3 py-2"><select class="form-input bill-select" onchange="onBillChange(this)">' + billOptionsHtml(billId, fallbackNumber) + '</select></td>' +
-    '<td class="px-3 py-2"><input type="number" class="form-input bill-amount" value="' + amount + '" step="0.01" min="0" oninput="calcAllocTotal()"></td>' +
-    '<td class="px-3 py-2 text-center"><button type="button" onclick="removeAllocation(this)" class="btn-icon-action danger" title="Remove">' + iconX() + '</button></td></tr>';
-}
-var EMPTY_ALLOC_ROW = '<tr><td colspan="3" class="text-center py-4 text-gray-400 text-[12px]">No allocation. Click "Add Bill" to allocate this payment.</td></tr>';
-
-function openPaymentModal(existing) {
-  if (!vendors.length) { showToast('No vendors found. Add a vendor first.', 'warning'); return; }
-  var e = existing || { vpStrId: '', vpNumber: '', date: todayStr(), vendorId: '', amount: '', mode: 'Bank Transfer', reference: '', bankAccountName: BANK_ACCOUNTS[0], allocations: [], notes: '', status: 'paid' };
-  var isEdit = !!existing;
-  formBills = []; editingVpId = isEdit ? e.vpStrId : '';
-
-  var vendorOptions = '<option value="">— Select vendor —</option>' + vendors.map(function (v) { return '<option ' + (v.id === e.vendorId ? 'selected' : '') + ' value="' + E(v.id) + '">' + E(v.name) + '</option>'; }).join('');
-  var modeOptions = PAY_MODES.map(function (m) { return '<option ' + (e.mode === m ? 'selected' : '') + '>' + E(m) + '</option>'; }).join('');
-  var banks = BANK_ACCOUNTS.slice();
-  if (e.bankAccountName && banks.indexOf(e.bankAccountName) === -1) banks.unshift(e.bankAccountName);
-  var bankOptions = banks.map(function (b) { return '<option ' + (e.bankAccountName === b ? 'selected' : '') + '>' + E(b) + '</option>'; }).join('');
-  var statusOptions = ['paid', 'pending', 'bounced'].map(function (s) { return '<option ' + (e.status === s ? 'selected' : '') + ' value="' + s + '">' + s.charAt(0).toUpperCase() + s.slice(1) + '</option>'; }).join('');
-  if (e.status === 'cleared') statusOptions += '<option selected value="cleared">Cleared</option>';
-
-  openModal(modalHeader(isEdit ? 'Edit Vendor Payment' : 'Record Vendor Payment', isEdit ? e.vpNumber : 'Record a new payment to vendor') +
-    '<div class="px-6 py-4 modal-scroll">' +
-    '<div class="grid grid-cols-2 md:grid-cols-4 gap-3">' +
-    fld('Payment #', '<input type="text" class="form-input" value="' + E(isEdit ? e.vpNumber : 'Auto-generated') + '" disabled>') +
-    fld('Date *', '<input type="date" class="form-input" id="p_date" value="' + E(e.date) + '">') +
-    fld('Vendor *', '<select class="form-input" id="p_vendor" onchange="onVendorChange()">' + vendorOptions + '</select>') +
-    fld('Amount (₹) *', '<input type="number" class="form-input" id="p_amount" value="' + E(e.amount) + '" step="0.01" min="0" placeholder="0.00">') + '</div>' +
-    '<div class="grid grid-cols-2 md:grid-cols-4 gap-3">' +
-    fld('Mode *', '<select class="form-input" id="p_mode">' + modeOptions + '</select>') +
-    fld('Reference', '<input type="text" class="form-input" id="p_reference" maxlength="100" value="' + E(e.reference) + '" placeholder="Txn/Cheque number">') +
-    fld('Paid From', '<select class="form-input" id="p_bankAccount">' + bankOptions + '</select>') +
-    fld('Status', '<select class="form-input" id="p_status">' + statusOptions + '</select>') + '</div>' +
-    '<div class="mt-2 pt-3 border-t border-gray-100"><div class="flex items-center justify-between mb-2"><h4 class="text-[12.5px] font-semibold text-gray-800">Allocate to Bills</h4>' +
-    '<button type="button" onclick="addAllocation()" class="text-[12px] font-semibold text-primary hover:underline flex items-center gap-1">' + iconPlus() + ' Add Bill</button></div>' +
-    '<div class="border border-gray-200 rounded-xl overflow-hidden"><table class="w-full text-[13px]"><thead class="bg-gray-200"><tr>' +
-    '<th class="px-3 py-2 text-left text-[11px] font-bold uppercase tracking-wide text-gray-500">Bill</th>' +
-    '<th class="px-3 py-2 text-left text-[11px] font-bold uppercase tracking-wide text-gray-500">Amount Paid</th>' +
-    '<th class="px-3 py-2 text-center text-[11px] font-bold uppercase tracking-wide text-gray-500" style="width:60px;">Action</th></tr></thead>' +
-    '<tbody id="allocBody">' + EMPTY_ALLOC_ROW + '</tbody></table></div>' +
-    '<div class="mt-2 flex justify-between items-center text-[12px]"><span class="text-gray-500">Total Allocated: <b id="allocTotal" class="text-primary">₹0</b></span><span class="text-gray-500">Unallocated: <b id="unallocTotal" class="text-amber-600">₹0</b></span></div>' +
-    '<div class="form-hint">Bill balances are reduced only when the status is Paid. Pending / Bounced payments do not change any bill.</div></div>' +
-    '<div class="mt-3">' + fld('Notes', '<textarea rows="2" maxlength="1000" class="form-input" id="p_notes" placeholder="Additional notes">' + E(e.notes) + '</textarea>') + '</div></div>' +
-    modalFooter(isEdit ? 'Update Payment' : 'Record Payment', 'onclick="savePayment(\'' + E(isEdit ? e.vpStrId : '') + '\', this)"'),
-    { width: 'max-w-3xl' });
-
-  document.getElementById('p_amount').addEventListener('input', calcAllocTotal);
-
-  if (isEdit) {
-    loadFormBills(e.vendorId, e.vpStrId).then(function () {
-      var body = document.getElementById('allocBody'); if (!body) return;
-      if (e.allocations.length) body.innerHTML = e.allocations.map(function (a) { return allocRowHtml(a.billStrId, a.amount, a.billNumber); }).join('');
-      calcAllocTotal();
-    });
-  }
-}
-
-async function loadFormBills(vendorId, excludeVpStrId) {
-  formBills = [];
-  if (!vendorId) return;
-  try {
-    var url = VP_API + '/vendor-bills/' + encodeURIComponent(vendorId) + (excludeVpStrId ? '?excludeVpStrId=' + encodeURIComponent(excludeVpStrId) : '');
-    var data = await apiRequest('GET', url);
-    var cur = document.getElementById('p_vendor');
-    if (cur && cur.value !== vendorId) return;
-    formBills = Array.isArray(data) ? data : [];
-  } catch (err) { formBills = []; showToast(err.message, 'error'); }
-}
-
-async function onVendorChange() {
-  var vendorId = document.getElementById('p_vendor').value;
-  document.getElementById('allocBody').innerHTML = EMPTY_ALLOC_ROW;
-  calcAllocTotal();
-  await loadFormBills(vendorId, editingVpId);
-  if (vendorId && !formBills.length) showToast('This vendor has no bills with a pending balance.', 'info');
-}
-
-function allocatedExcept(row) {
-  var total = 0;
-  document.querySelectorAll('#allocBody .line-item-row').forEach(function (r) {
-    if (r !== row) total += parseFloat(r.querySelector('.bill-amount').value) || 0;
-  });
-  return total;
-}
-function suggestAmount(billId, row) {
-  var bill = formBills.find(function (b) { return b.pbStrId === billId; });
-  if (!bill) return 0;
-  var payAmt = parseFloat(document.getElementById('p_amount').value) || 0;
-  var remaining = payAmt > 0 ? Math.max(payAmt - allocatedExcept(row), 0) : bill.balance;
-  return round2(Math.min(bill.balance, remaining));
-}
-function addAllocation() {
-  var vendorId = document.getElementById('p_vendor').value;
-  if (!vendorId) { showToast('Select a vendor first', 'warning'); return; }
-  if (!formBills.length) { showToast('This vendor has no bills with a pending balance.', 'info'); return; }
-  var used = [];
-  document.querySelectorAll('#allocBody .bill-select').forEach(function (s) { used.push(s.value); });
-  var next = formBills.find(function (b) { return used.indexOf(b.pbStrId) === -1; });
-  if (!next) { showToast('All open bills are already added.', 'info'); return; }
-  var tbody = document.getElementById('allocBody');
-  if (tbody.querySelector('tr td[colspan]')) tbody.innerHTML = '';
-  tbody.insertAdjacentHTML('beforeend', allocRowHtml(next.pbStrId, suggestAmount(next.pbStrId, null)));
-  calcAllocTotal();
-}
-function onBillChange(sel) {
-  var row = sel.closest('tr');
-  row.querySelector('.bill-amount').value = suggestAmount(sel.value, row);
-  calcAllocTotal();
-}
-function removeAllocation(btn) {
-  var row = btn.closest('tr'); if (row) row.remove();
-  var tbody = document.getElementById('allocBody');
-  if (tbody && !tbody.querySelector('.line-item-row')) tbody.innerHTML = EMPTY_ALLOC_ROW;
-  calcAllocTotal();
-}
-function calcAllocTotal() {
-  var total = 0;
-  document.querySelectorAll('#allocBody .bill-amount').forEach(function (inp) { total += parseFloat(inp.value) || 0; });
-  var a = document.getElementById('allocTotal'), u = document.getElementById('unallocTotal');
-  if (a) a.textContent = money(round2(total));
-  var amtEl = document.getElementById('p_amount'), payAmt = amtEl ? (parseFloat(amtEl.value) || 0) : 0;
-  if (u) u.textContent = money(round2(Math.max(payAmt - total, 0)));
-}
-
-// =============================================================
-// SAVE (create / update) — handled by the mock apiRequest
-// =============================================================
-async function savePayment(existingId, btn) {
-  var date = document.getElementById('p_date').value, vendorId = document.getElementById('p_vendor').value;
-  var amount = parseFloat(document.getElementById('p_amount').value) || 0;
-  var mode = document.getElementById('p_mode').value, reference = document.getElementById('p_reference').value.trim();
-  var bankAccount = document.getElementById('p_bankAccount').value, status = document.getElementById('p_status').value;
-  var notes = document.getElementById('p_notes').value.trim();
-
-  if (!date || !vendorId || amount <= 0) { showToast('Please fill required fields (Date, Vendor, Amount)', 'error'); return; }
-
-  var allocations = [], seen = {}, allocTotal = 0, problem = '';
-  document.querySelectorAll('#allocBody .line-item-row').forEach(function (row) {
-    var billId = row.querySelector('.bill-select').value, amt = round2(parseFloat(row.querySelector('.bill-amount').value) || 0);
-    if (!billId) return;
-    if (amt <= 0) { problem = 'Every allocated bill needs an amount greater than 0.'; return; }
-    if (seen[billId]) { problem = 'The same bill is allocated more than once.'; return; }
-    seen[billId] = true;
-    var bill = formBills.find(function (b) { return b.pbStrId === billId; });
-    if (status === 'paid' && bill && amt > bill.balance + 0.005) { problem = 'Allocation for ' + (bill.pbNumber || billId) + ' exceeds its balance of ' + money(bill.balance) + '.'; return; }
-    allocTotal += amt; allocations.push({ billStrId: billId, amount: amt });
-  });
-  if (!problem && round2(allocTotal) > round2(amount) + 0.005) problem = 'Total allocated (' + money(round2(allocTotal)) + ') exceeds the payment amount (' + money(amount) + ').';
-  if (problem) { showToast(problem, 'error'); return; }
-
-  var payload = { vendorId: vendorId, date: date, amount: round2(amount), mode: mode, reference: reference, bankAccountName: bankAccount, status: status, notes: notes, allocations: allocations };
-
-  if (btn) btn.disabled = true;
-  try {
-    if (existingId) { await apiRequest('PUT', VP_API + '/update-vendor-payment/' + encodeURIComponent(existingId), payload); showToast('Payment updated successfully', 'success'); }
-    else { await apiRequest('POST', VP_API + '/create-vendor-payment', payload); showToast('Payment recorded successfully', 'success'); }
-    closeModal(); await refreshAll();
-  } catch (err) { showToast(err.message, 'error'); if (btn) btn.disabled = false; }
-}
-
-// =============================================================
-// DELETE
-// =============================================================
-function delPayment(id) {
-  var p = findPayment(id); if (!p) return;
-  openModal(modalHeader('Delete Vendor Payment', p.vpNumber) +
-    '<div class="px-6 py-4 text-sm text-gray-600"><p>Are you sure you want to permanently delete <b class="text-gray-800">' + E(p.vpNumber) + '</b>?</p>' +
-    '<p class="text-gray-400 text-[12px] mt-1">This action cannot be undone. Bill balances will be restored.</p>' +
-    '<p class="text-amber-600 text-[12px] mt-2">Amount: ' + money(p.amount) + '</p></div>' +
-    modalFooter('Delete', 'onclick="confirmDeletePayment(\'' + E(id) + '\', this)"', '', true), { width: 'max-w-md' });
-}
-async function confirmDeletePayment(id, btn) {
-  if (btn) btn.disabled = true;
-  try {
-    await apiRequest('DELETE', VP_API + '/delete-vendor-payment/' + encodeURIComponent(id));
-    closeModal(); showToast('Vendor payment deleted successfully', 'warning'); await refreshAll();
-  } catch (err) { showToast(err.message, 'error'); if (btn) btn.disabled = false; }
-}
-
-// =============================================================
-// SEARCH (injected in the top bar)
-// =============================================================
-(function addSearchToTopbar() {
-  var header = document.querySelector('.app-main header');
-  if (!header) return;
-  var searchHtml = '<div class="hidden sm:flex flex-1 max-w-[420px] relative ml-4"><span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">' + iconSearch() + '</span>' +
-    '<input type="text" id="searchInput" placeholder="Search payments by number, vendor, reference…" onkeyup="filterPayments()" class="w-full border border-gray-200 bg-gray-50 focus:bg-white rounded-lg pl-9 pr-3 py-2 text-[13px] outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition placeholder:text-gray-400"></div>';
-  var content = header.innerHTML, idx = content.indexOf('lg:hidden');
-  if (idx !== -1) {
-    var end = content.indexOf('</div>', idx) + 6;
-    header.innerHTML = content.substring(0, end) + searchHtml + content.substring(end);
-  }
-})();
-
-// =============================================================
-// INIT
-// =============================================================
-(async function init() {
-  renderPayments();
-  try { await loadVendors(); } catch (err) { showToast('Could not load vendors: ' + err.message, 'error'); }
-  await refreshAll();
-})();
-</script>
 </body>
+
 </html>
