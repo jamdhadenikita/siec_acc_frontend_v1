@@ -400,6 +400,60 @@
     '        </a>',
     '      </li>',
 
+    /* ============ CRM ============ */
+    '      <li class="sidebar-nav-divider" role="separator"></li>',
+    '      <li class="sidebar-nav-heading"><span>CRM</span></li>',
+ 
+    '      <li class="sidebar-nav-item">',
+    '        <a href="/crm/crm.html?tab=dashboard" class="sidebar-nav-link" data-page="crm-dashboard">',
+    '          <span class="sidebar-nav-icon"><i class="fa-solid fa-chart-pie"></i></span>',
+    '          <span class="sidebar-nav-label">Dashboard</span>',
+    '          <span class="sidebar-tooltip">Dashboard</span>',
+    '        </a>',
+    '      </li>',
+ 
+    '      <li class="sidebar-nav-item">',
+    '        <a href="/crm/crm.html?tab=lead-registration" class="sidebar-nav-link" data-page="crm-lead-registration">',
+    '          <span class="sidebar-nav-icon"><i class="fa-solid fa-user-plus"></i></span>',
+    '          <span class="sidebar-nav-label">Lead Registration</span>',
+    '          <span class="sidebar-tooltip">Lead Registration</span>',
+    '        </a>',
+    '      </li>',
+ 
+    '      <li class="sidebar-nav-item">',
+    '        <a href="/crm/crm.html?tab=contacted-leads" class="sidebar-nav-link" data-page="crm-contacted-leads">',
+    '          <span class="sidebar-nav-icon"><i class="fa-solid fa-phone"></i></span>',
+    '          <span class="sidebar-nav-label">Contacted Leads</span>',
+    '          <span class="sidebar-tooltip">Contacted Leads</span>',
+    '        </a>',
+    '      </li>',
+ 
+    '      <li class="sidebar-nav-item">',
+    '        <a href="/crm/crm.html?tab=deals" class="sidebar-nav-link" data-page="crm-deals">',
+    '          <span class="sidebar-nav-icon"><i class="fa-solid fa-briefcase"></i></span>',
+    '          <span class="sidebar-nav-label">Deals</span>',
+    '          <span class="sidebar-tooltip">Deals</span>',
+    '        </a>',
+    '      </li>',
+ 
+    '      <li class="sidebar-nav-item">',
+    '        <a href="/crm/crm.html?tab=closed-won" class="sidebar-nav-link" data-page="crm-closed-won">',
+    '          <span class="sidebar-nav-icon"><i class="fa-solid fa-trophy"></i></span>',
+    '          <span class="sidebar-nav-label">Closed Won</span>',
+    '          <span class="sidebar-tooltip">Closed Won</span>',
+    '        </a>',
+    '      </li>',
+ 
+    '      <li class="sidebar-nav-item">',
+    '        <a href="/crm/crm.html?tab=activities-log" class="sidebar-nav-link" data-page="crm-activities-log">',
+    '          <span class="sidebar-nav-icon"><i class="fa-solid fa-timeline"></i></span>',
+    '          <span class="sidebar-nav-label">Activities Log</span>',
+    '          <span class="sidebar-tooltip">Activities Log</span>',
+    '        </a>',
+    '      </li>',
+
+
+
     '    </ul>',
     '  </nav>',
     '  <hr>',
@@ -801,4 +855,163 @@
   };
 
   window.NavSidebar = NavSidebar;
+})(window, document);
+
+
+/* =====================================================================
+   nav-apps — app switcher (Billing | CRM | HRMS)
+   PASTE this whole block at the VERY END of nav-sidebar.js, after the
+   closing   })(window, document);   line. Nothing else needs to change:
+   every page already loads nav-sidebar.js, so all pages get it.
+
+   What it does
+   - Adds the Billing / CRM / HRMS chips to the top bar.
+   - Shows ONLY the current app's links in the sidebar
+     (Billing = your existing links, CRM = the CRM links below).
+   - Users & Roles and Settings stay visible in every app.
+   - Gives each app its own colour (sidebar highlight, avatar, label).
+   - Remembers the last app, so shared pages (Settings) keep its colour.
+   - If you already pasted the old CRM snippet, it is removed automatically.
+   ===================================================================== */
+(function (window, document) {
+  "use strict";
+
+  var HRMS_URL = "/hrms/index.html";          // <-- set your existing HRMS home page
+  var SHARED_PAGES = ["users", "settings"];   // data-page values shown in every app
+  var STORAGE_KEY = "activeApp";
+
+  var APPS = [
+    { id: "billing", label: "Billing", icon: "file-invoice-dollar", color: "#6da84c", dark: "#5c9140", soft: "#eef5e8", home: "/dashboard/dashboard.html" },
+    {
+      id: "crm", label: "CRM", icon: "handshake", color: "#7c3aed", dark: "#6d28d9", soft: "#f5f3ff",
+      home: "/crm/crm.html?tab=dashboard", base: "/crm/crm.html?tab=",
+      nav: [
+        { items: [["dashboard", "Dashboard", "chart-pie"]] },
+        { heading: "Leads", items: [["lead-registration", "Lead Registration", "user-plus"], ["contacted-leads", "Contacted Leads", "phone"]] },
+        { heading: "Deals", items: [["deals", "Deals", "briefcase"], ["closed-won", "Closed Won", "trophy"]] },
+        { heading: "History", items: [["activities-log", "Activities Log", "timeline"]] }
+      ]
+    },
+    // HRMS is your existing separate app: the chip just opens it. Add a `nav` array
+    // here (same shape as CRM) if you ever want its links inside this sidebar.
+    { id: "hrms", label: "HRMS", icon: "id-badge", color: "#ea580c", dark: "#c2410c", soft: "#fff7ed", home: HRMS_URL }
+  ];
+
+  function getApp(id) { return APPS.filter(function (a) { return a.id === id; })[0]; }
+  function storedApp() { try { return localStorage.getItem(STORAGE_KEY); } catch (e) { return null; } }
+
+  function detectApp(cfg) {
+    if (cfg.app && getApp(cfg.app)) return cfg.app;
+    var page = String(cfg.activePage || "").toLowerCase(), path = window.location.pathname;
+    if (SHARED_PAGES.indexOf(page) !== -1) return storedApp() || "billing";
+    if (path.indexOf("/crm/") === 0 || page.indexOf("crm-") === 0) return "crm";
+    if (path.indexOf("/hrms/") === 0 || page.indexOf("hrms-") === 0) return "hrms";
+    return "billing";
+  }
+
+  // which app owns a sidebar link, judged by its data-page
+  function ownerOf(page) {
+    page = String(page || "").toLowerCase();
+    if (SHARED_PAGES.indexOf(page) !== -1) return "all";
+    if (page.indexOf("crm-") === 0) return "crm";
+    if (page.indexOf("hrms-") === 0) return "hrms";
+    return "billing";
+  }
+
+  function addStyle() {
+    if (document.getElementById("nav-apps-style")) return;
+    var css =
+      'html[data-app="crm"]{--color-primary:#7c3aed;--color-primary-dark:#6d28d9;--color-primary-soft:#f5f3ff}' +
+      'html[data-app="hrms"]{--color-primary:#ea580c;--color-primary-dark:#c2410c;--color-primary-soft:#fff7ed}' +
+      'html[data-app="crm"] .sidebar-nav-heading span{color:#6d28d9}html[data-app="hrms"] .sidebar-nav-heading span{color:#c2410c}' +
+      '.app-switch{display:flex;gap:2px;padding:3px;border:1px solid var(--color-border);background:var(--color-bg);border-radius:12px;flex-shrink:0}' +
+      '.app-chip{display:inline-flex;align-items:center;gap:7px;padding:6px 12px;border-radius:9px;font-size:13px;font-weight:500;color:var(--color-text-muted);text-decoration:none;white-space:nowrap;transition:background var(--transition-fast),color var(--transition-fast)}' +
+      '.app-chip i{color:var(--c);font-size:14px}.app-chip:hover{background:#fff;color:var(--color-text)}' +
+      '.app-chip.active{background:var(--s);color:var(--d);font-weight:600;box-shadow:inset 0 0 0 1px var(--c)}' +
+      APPS.map(function (a) { return '.app-chip[data-app="' + a.id + '"]{--c:' + a.color + ';--s:' + a.soft + ';--d:' + a.dark + '}'; }).join('') +
+      '.sidebar-app-label{display:flex;align-items:center;gap:9px;margin:2px 4px 10px;padding:8px 10px;border-radius:10px;background:var(--color-primary-soft);color:var(--color-primary-dark);font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap;overflow:hidden}' +
+      'html.sidebar-collapsed .sidebar-app-label{justify-content:center;padding:8px 0}html.sidebar-collapsed .sidebar-app-label span{display:none}' +
+      '@media (max-width:1023.98px){html.sidebar-collapsed .sidebar-app-label span{display:inline}}' +
+      '@media (max-width:640px){.app-chip span{display:none}.app-chip{padding:7px 10px}.topbar-page-title{display:none}}';
+    var st = document.createElement("style");
+    st.id = "nav-apps-style"; st.textContent = css; document.head.appendChild(st);
+  }
+
+  function navHtml(app) {
+    if (!app.nav) return "";
+    var h = "";
+    app.nav.forEach(function (g, i) {
+      if (i > 0) h += '<li class="sidebar-nav-divider" role="separator"></li>';
+      if (g.heading) h += '<li class="sidebar-nav-heading"><span>' + g.heading + "</span></li>";
+      g.items.forEach(function (it) {
+        h += '<li class="sidebar-nav-item"><a href="' + app.base + it[0] + '" class="sidebar-nav-link" data-page="' + app.id + "-" + it[0] + '">' +
+          '<span class="sidebar-nav-icon"><i class="fa-solid fa-' + it[2] + '"></i></span>' +
+          '<span class="sidebar-nav-label">' + it[1] + '</span><span class="sidebar-tooltip">' + it[1] + "</span></a></li>";
+      });
+    });
+    return h;
+  }
+
+  function applyApps(cfg) {
+    var app = getApp(detectApp(cfg));
+    try { localStorage.setItem(STORAGE_KEY, app.id); } catch (e) {}
+    document.documentElement.setAttribute("data-app", app.id);
+    addStyle();
+
+    var list = document.querySelector(".sidebar-nav-list");
+    if (!list) return;
+
+    // drop CRM links from the old paste-in snippet, then add this app's own links
+    [].slice.call(list.querySelectorAll('.sidebar-nav-link[data-page^="crm-"]')).forEach(function (a) { var li = a.closest("li"); if (li) li.remove(); });
+    list.insertAdjacentHTML("afterbegin", navHtml(app));
+
+    // show only this app's links (+ shared ones)
+    var kids = [].slice.call(list.children);
+    function isItem(li) { return !!li.querySelector(".sidebar-nav-link"); }
+    kids.forEach(function (li) {
+      var a = li.querySelector(".sidebar-nav-link");
+      if (!a) return;
+      var own = ownerOf(a.getAttribute("data-page"));
+      li.style.display = (own === "all" || own === app.id) ? "" : "none";
+    });
+    // hide headings / dividers whose group has no visible link left
+    var group = [];
+    function flush() {
+      var any = group.some(function (li) { return isItem(li) && li.style.display !== "none"; });
+      group.forEach(function (li) { if (!isItem(li)) li.style.display = any ? "" : "none"; });
+      group = [];
+    }
+    kids.forEach(function (li) { if (li.classList.contains("sidebar-nav-divider")) flush(); group.push(li); });
+    flush();
+
+    // highlight + close-on-tap for the injected links
+    var active = String(cfg.activePage || "").toLowerCase();
+    [].slice.call(list.querySelectorAll('.sidebar-nav-link[data-page^="' + app.id + '-"]')).forEach(function (a) {
+      if (a.getAttribute("data-page").toLowerCase() === active) { a.classList.add("active"); a.setAttribute("aria-current", "page"); }
+      a.addEventListener("click", function () { document.documentElement.classList.remove("mobile-sidebar-open"); });
+    });
+
+    // app label at the top of the sidebar (identifies where you are)
+    var nav = document.querySelector(".sidebar-nav");
+    if (nav && !nav.querySelector(".sidebar-app-label")) {
+      nav.insertAdjacentHTML("afterbegin", '<div class="sidebar-app-label" title="' + app.label + '"><i class="fa-solid fa-' + app.icon + '"></i><span>' + app.label + "</span></div>");
+    }
+
+    // switcher chips in the top bar
+    var sw = '<div class="app-switch" role="navigation" aria-label="Apps">' + APPS.map(function (a) {
+      return '<a class="app-chip' + (a.id === app.id ? " active" : "") + '" data-app="' + a.id + '" href="' + a.home + '"' + (a.id === app.id ? ' aria-current="page"' : "") + '><i class="fa-solid fa-' + a.icon + '"></i><span>' + a.label + "</span></a>";
+    }).join("") + "</div>";
+    var menuBtn = document.getElementById("mobile-menu-btn"), left = document.querySelector(".topbar-left");
+    if (document.querySelector(".app-switch")) return;
+    if (menuBtn) menuBtn.insertAdjacentHTML("afterend", sw); else if (left) left.insertAdjacentHTML("afterbegin", sw);
+  }
+
+  var NS = window.NavSidebar;
+  if (!NS || NS._appsPatched) return;
+  var originalInit = NS.init;
+  NS.init = function (cfg) {
+    originalInit.apply(NS, arguments);
+    try { applyApps(cfg || {}); } catch (err) { console.error("[nav-apps] failed:", err); }
+  };
+  NS._appsPatched = true;
 })(window, document);
