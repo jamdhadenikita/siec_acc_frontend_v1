@@ -597,8 +597,8 @@ var MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'A
 var DOW = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 var staffList = ['Admin', 'Rohit Patil', 'Neha Joshi'];
 var meetingTypes = ['In-office', 'Online', 'Phone call', 'Client visit'];
-var priorityColor = { P1: '#dc2626', P2: '#d97706', P3: '#1985bf' };
-var chartPalette = ['#7c3aed', '#1985bf', '#f59e0b', '#8b5cf6', '#ef4444', '#0891b2'];
+var priorityColor = { P1: '#dc2626', P2: '#d97706', P3: '#0284c7' };
+var chartPalette = ['#0f766e', '#14b8a6', '#f59e0b', '#0284c7', '#ef4444', '#8b5cf6'];
 var dbYM = { y: new Date().getFullYear(), m: new Date().getMonth() };
 function pad2(n) { return String(n).padStart(2, '0'); }
 function keyOf(d) { return d.getFullYear() + '-' + pad2(d.getMonth() + 1) + '-' + pad2(d.getDate()); }
@@ -676,7 +676,7 @@ function renderDB() {
   leads.forEach(function (l) { var k = l.service || 'Other'; svc[k] = (svc[k] || 0) + 1; });
   var keys = Object.keys(svc);
   var stops = keys.map(function (k, j) { var a = acc / total * 100; acc += svc[k]; return chartPalette[j % chartPalette.length] + ' ' + a + '% ' + (acc / total * 100) + '%'; }).join(',');
-  setHtml('dbDonut', '<div class="db-donut-wrap"><div class="db-donut" style="background:conic-gradient(' + (stops || '#e5e7eb 0 100%') + ')"><div class="db-donut-hole">' + leads.length + '<span>leads</span></div></div><div class="db-legend">' +
+  setHtml('dbDonut', '<div class="db-donut-wrap"><div class="db-donut" style="background:conic-gradient(' + (stops || '#d6eae6 0 100%') + ')"><div class="db-donut-hole">' + leads.length + '<span>leads</span></div></div><div class="db-legend">' +
     keys.map(function (k, j) { return '<div><i style="background:' + chartPalette[j % chartPalette.length] + '"></i>' + esc(k) + ' <b>' + svc[k] + '</b></div>'; }).join('') + '</div></div>');
 }
 

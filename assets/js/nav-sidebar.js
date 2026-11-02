@@ -857,17 +857,17 @@
   window.NavSidebar = NavSidebar;
 })(window, document);
 
-
 /* =====================================================================
-   nav-apps — app switcher (Billing | CRM | HRMS)
+   nav-apps — app switcher (Account | CRM | HRMS)
    PASTE this whole block at the VERY END of nav-sidebar.js, after the
    closing   })(window, document);   line. Nothing else needs to change:
    every page already loads nav-sidebar.js, so all pages get it.
 
    What it does
-   - Adds the Billing / CRM / HRMS chips to the top bar.
+   - Adds the app chips (Account, CRM) to the top bar. HRMS is switched off
+     for now: set  enabled: true  on the HRMS entry below to bring it back.
    - Shows ONLY the current app's links in the sidebar
-     (Billing = your existing links, CRM = the CRM links below).
+     (Account = your existing links, CRM = the CRM links below).
    - Users & Roles and Settings stay visible in every app.
    - Gives each app its own colour (sidebar highlight, avatar, label).
    - Remembers the last app, so shared pages (Settings) keep its colour.
@@ -881,9 +881,9 @@
   var STORAGE_KEY = "activeApp";
 
   var APPS = [
-    { id: "billing", label: "Billing", icon: "file-invoice-dollar", color: "#6da84c", dark: "#5c9140", soft: "#eef5e8", home: "/dashboard/dashboard.html" },
+    { id: "account", label: "Account", icon: "file-invoice-dollar", color: "#6da84c", dark: "#5c9140", soft: "#eef5e8", home: "/dashboard/dashboard.html" },
     {
-      id: "crm", label: "CRM", icon: "handshake", color: "#7c3aed", dark: "#6d28d9", soft: "#f5f3ff",
+      id: "crm", label: "CRM", icon: "handshake", color: "#0f766e", dark: "#0d6b60", soft: "#ccfbf1",
       home: "/crm/crm.html?tab=dashboard", base: "/crm/crm.html?tab=",
       nav: [
         { items: [["dashboard", "Dashboard", "chart-pie"]] },
@@ -894,8 +894,11 @@
     },
     // HRMS is your existing separate app: the chip just opens it. Add a `nav` array
     // here (same shape as CRM) if you ever want its links inside this sidebar.
-    { id: "hrms", label: "HRMS", icon: "id-badge", color: "#ea580c", dark: "#c2410c", soft: "#fff7ed", home: HRMS_URL }
+    { id: "hrms", enabled: false, label: "HRMS", icon: "id-badge", color: "#ea580c", dark: "#c2410c", soft: "#fff7ed", home: HRMS_URL }
   ];
+
+  // apps with enabled:false are hidden everywhere (switcher chip, sidebar, detection)
+  APPS = APPS.filter(function (a) { return a.enabled !== false; });
 
   function getApp(id) { return APPS.filter(function (a) { return a.id === id; })[0]; }
   function storedApp() { try { return localStorage.getItem(STORAGE_KEY); } catch (e) { return null; } }
@@ -903,10 +906,10 @@
   function detectApp(cfg) {
     if (cfg.app && getApp(cfg.app)) return cfg.app;
     var page = String(cfg.activePage || "").toLowerCase(), path = window.location.pathname;
-    if (SHARED_PAGES.indexOf(page) !== -1) return storedApp() || "billing";
+    if (SHARED_PAGES.indexOf(page) !== -1) return storedApp() || "account";
     if (path.indexOf("/crm/") === 0 || page.indexOf("crm-") === 0) return "crm";
     if (path.indexOf("/hrms/") === 0 || page.indexOf("hrms-") === 0) return "hrms";
-    return "billing";
+    return "account";
   }
 
   // which app owns a sidebar link, judged by its data-page
@@ -915,19 +918,20 @@
     if (SHARED_PAGES.indexOf(page) !== -1) return "all";
     if (page.indexOf("crm-") === 0) return "crm";
     if (page.indexOf("hrms-") === 0) return "hrms";
-    return "billing";
+    return "account";
   }
 
   function addStyle() {
     if (document.getElementById("nav-apps-style")) return;
     var css =
-      'html[data-app="crm"]{--color-primary:#7c3aed;--color-primary-dark:#6d28d9;--color-primary-soft:#f5f3ff}' +
+      'html[data-app="crm"]{--color-primary:#0f766e;--color-primary-dark:#0d6b60;--color-primary-soft:#ccfbf1;--color-secondary:#14b8a6;--color-secondary-soft:#e6f4f1;--color-bg:#f0fbf8;--color-border:#d6eae6;--color-text:#163b3a;--color-text-muted:#647b78}' +
+      'html[data-app="crm"] #sidebar-root,html[data-app="crm"] .app-sidebar{background:#e6f4f1}' +
       'html[data-app="hrms"]{--color-primary:#ea580c;--color-primary-dark:#c2410c;--color-primary-soft:#fff7ed}' +
-      'html[data-app="crm"] .sidebar-nav-heading span{color:#6d28d9}html[data-app="hrms"] .sidebar-nav-heading span{color:#c2410c}' +
+      'html[data-app="crm"] .sidebar-nav-heading span{color:#0f766e}html[data-app="hrms"] .sidebar-nav-heading span{color:#c2410c}' +
       '.app-switch{display:flex;gap:2px;padding:3px;border:1px solid var(--color-border);background:var(--color-bg);border-radius:12px;flex-shrink:0}' +
       '.app-chip{display:inline-flex;align-items:center;gap:7px;padding:6px 12px;border-radius:9px;font-size:13px;font-weight:500;color:var(--color-text-muted);text-decoration:none;white-space:nowrap;transition:background var(--transition-fast),color var(--transition-fast)}' +
       '.app-chip i{color:var(--c);font-size:14px}.app-chip:hover{background:#fff;color:var(--color-text)}' +
-      '.app-chip.active{background:var(--s);color:var(--d);font-weight:600;box-shadow:inset 0 0 0 1px var(--c)}' +
+      '.app-chip.active{background:var(--c);color:#fff;font-weight:600}.app-chip.active i{color:#fff}' +
       APPS.map(function (a) { return '.app-chip[data-app="' + a.id + '"]{--c:' + a.color + ';--s:' + a.soft + ';--d:' + a.dark + '}'; }).join('') +
       '.sidebar-app-label{display:flex;align-items:center;gap:9px;margin:2px 4px 10px;padding:8px 10px;border-radius:10px;background:var(--color-primary-soft);color:var(--color-primary-dark);font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap;overflow:hidden}' +
       'html.sidebar-collapsed .sidebar-app-label{justify-content:center;padding:8px 0}html.sidebar-collapsed .sidebar-app-label span{display:none}' +
@@ -953,7 +957,7 @@
   }
 
   function applyApps(cfg) {
-    var app = getApp(detectApp(cfg));
+    var app = getApp(detectApp(cfg)) || APPS[0];
     try { localStorage.setItem(STORAGE_KEY, app.id); } catch (e) {}
     document.documentElement.setAttribute("data-app", app.id);
     addStyle();

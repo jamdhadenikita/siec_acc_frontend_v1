@@ -1,9 +1,9 @@
-/* CRM styles — purchase.css recoloured with the CRM identity colour (violet) */
+/* CRM styles — purchase.css recoloured with the CRM teal palette */
 /* =============================================================
    Purchase Management — styles
    Mirrors the Vendors / Suppliers page design system so both
-   modules feel like one product: same primary green (#7c3aed),
-   secondary blue (#1985bf), same badges, stat cards, modal and
+   modules feel like one product: same primary green (#0f766e),
+   secondary blue (#0284c7), same badges, stat cards, modal and
    table patterns.
    ============================================================= */
 
@@ -13,7 +13,7 @@
   font-weight: 600;
   letter-spacing: 0.02em;
   text-transform: uppercase;
-  color: #7c3aed;
+  color: #0f766e;
 }
 .page-title {
   font-size: 24px;
@@ -24,7 +24,7 @@
 }
 .page-subtitle {
   font-size: 13px;
-  color: #6b7280;
+  color: #647b78;
   margin-top: 2px;
 }
 
@@ -33,7 +33,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: 4px;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid #d6eae6;
   padding-bottom: 0;
 }
 .module-tab-btn {
@@ -43,7 +43,7 @@
   padding: 9px 16px;
   font-size: 12.5px;
   font-weight: 600;
-  color: #6b7280;
+  color: #647b78;
   background: transparent;
   border: none;
   border-bottom: 2px solid transparent;
@@ -52,13 +52,13 @@
   transition: all 0.15s ease;
 }
 .module-tab-btn:hover:not(.active) {
-  color: #1f2937;
-  background: #f8fafc;
+  color: #163b3a;
+  background: #f0fbf8;
 }
 .module-tab-btn.active {
-  color: #6d28d9;
-  background: #f5f3ff;
-  border-bottom-color: #7c3aed;
+  color: #0d6b60;
+  background: #e6f4f1;
+  border-bottom-color: #0f766e;
 }
 
 .module-tab-panel { animation: pmFadeIn 0.2s ease; }
@@ -67,12 +67,12 @@
 .module-title {
   font-size: 17px;
   font-weight: 700;
-  color: #111827;
+  color: #163b3a;
   letter-spacing: -0.01em;
 }
 .module-subtitle {
   font-size: 12.5px;
-  color: #6b7280;
+  color: #647b78;
   margin-top: 2px;
   max-width: 560px;
 }
@@ -89,9 +89,9 @@
 
 /* ---------- Inline per-table filters (replaces the old Filter-button dropdown) ---------- */
 .inline-filter-select {
-  border: 1px solid #e5e7eb;
+  border: 1px solid #d6eae6;
   background: #fff;
-  color: #374151;
+  color: #163b3a;
   font-size: 11.5px;
   font-weight: 600;
   border-radius: 8px;
@@ -103,8 +103,8 @@
 }
 .inline-filter-select:hover { border-color: #d1d5db; }
 .inline-filter-select:focus {
-  border-color: #7c3aed;
-  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15);
+  border-color: #0f766e;
+  box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.15);
 }
 
 /* ---------- Reset-filters button (distinct from row delete/danger buttons:
@@ -117,9 +117,9 @@
   height: 32px;
   padding: 0 12px;
   border-radius: 8px;
-  border: 1px solid #ddd6fe;
-  background: #faf8ff;
-  color: #6d28d9;
+  border: 1px solid #d6eae6;
+  background: #f0fbf8;
+  color: #0d6b60;
   font-size: 11.5px;
   font-weight: 600;
   cursor: pointer;
@@ -128,39 +128,39 @@
   white-space: nowrap;
 }
 .inline-filter-reset:hover {
-  background: #f5f3ff;
-  border-color: #7c3aed;
-  color: #5b21b6;
+  background: #e6f4f1;
+  border-color: #0f766e;
+  color: #0b5a52;
 }
 .inline-filter-reset svg { flex-shrink: 0; }
 
 /* ---------- Form controls ---------- */
 .form-input {
   width: 100%;
-  border: 1px solid #e5e7eb;
+  border: 1px solid #d6eae6;
   border-radius: 8px;
   padding: 8px 12px;
   font-size: 13px;
   outline: none;
   transition: border-color 0.2s, box-shadow 0.2s;
   background: #fafafa;
-  color: #1a1a2e;
+  color: #163b3a;
 }
 .form-input:focus {
-  border-color: #7c3aed;
-  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15);
+  border-color: #0f766e;
+  box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.15);
   background: #ffffff;
 }
 .form-input:disabled { background: #f3f4f6; cursor: not-allowed; }
 .form-label {
   font-size: 11.5px;
   font-weight: 600;
-  color: #374151;
+  color: #163b3a;
   display: block;
   margin-bottom: 4px;
 }
 .form-label .required { color: #ef4444; margin-left: 2px; }
-.form-hint { font-size: 10.5px; color: #9ca3af; margin-top: 3px; }
+.form-hint { font-size: 10.5px; color: #94a3a0; margin-top: 3px; }
 
 /* ---------- Stat cards ---------- */
 .stat-card {
@@ -176,12 +176,12 @@
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  color: #6b7280;
+  color: #647b78;
 }
 .stat-value {
   font-size: 22px;
   font-weight: 700;
-  color: #111827;
+  color: #163b3a;
   margin-top: 2px;
 }
 
@@ -199,7 +199,7 @@
 .badge-green { background: #dcfce7; color: #166534; }
 .badge-amber { background: #fef3c7; color: #92400e; }
 .badge-red { background: #fee2e2; color: #991b1b; }
-.badge-gray { background: #f1f5f9; color: #475569; }
+.badge-gray { background: #e6f4f1; color: #647b78; }
 .badge-blue { background: #dbeafe; color: #1e40af; }
 .badge-dot { width: 6px; height: 6px; border-radius: 50%; display: inline-block; }
 .badge-dot-green { background: #22c55e; }
@@ -209,12 +209,12 @@
 .badge-dot-blue { background: #3b82f6; }
 
 /* ---------- Table ---------- */
-.table-row-hover:hover { background: #f8fafc; }
+.table-row-hover:hover { background: #f0fbf8; }
 
 /* ---------- Panel wrapper (matches Vendors table card) ---------- */
 .panel-card {
   background: #fff;
-  border: 1px solid #7c3aed;
+  border: 1px solid #0f766e;
   border-radius: 12px;
   box-shadow: 0 1px 2px rgba(0,0,0,0.03);
   overflow: hidden;
@@ -226,12 +226,12 @@
   gap: 12px;
   flex-wrap: wrap;
   padding: 14px 20px;
-  border-bottom: 1px solid #f1f5f9;
+  border-bottom: 1px solid #e6f4f1;
 }
 .panel-card-title {
   font-weight: 700;
   font-size: 14.5px;
-  color: #1f2937;
+  color: #163b3a;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -239,8 +239,8 @@
 .panel-count-chip {
   font-size: 11px;
   font-weight: 700;
-  background: #f5f3ff;
-  color: #6d28d9;
+  background: #e6f4f1;
+  color: #0d6b60;
   padding: 2px 8px;
   border-radius: 999px;
   margin-left: 4px;
@@ -260,7 +260,7 @@
   border: none;
   cursor: pointer;
 }
-.btn-icon-action:hover { background: #f1f5f9; color: #7c3aed; }
+.btn-icon-action:hover { background: #e6f4f1; color: #0f766e; }
 .btn-icon-action.danger:hover { background: #fee2e2; color: #ef4444; }
 
 /* ---------- Toast ---------- */
@@ -268,7 +268,7 @@
 .toast-success { background: #16a34a; }
 .toast-error { background: #dc2626; }
 .toast-warning { background: #f59e0b; }
-.toast-info { background: #7c3aed; }
+.toast-info { background: #0f766e; }
 
 /* ---------- Modal scroll area ---------- */
 .modal-scroll { max-height: 60vh; overflow-y: auto; }
@@ -282,12 +282,12 @@
   font-size: 12px;
   font-weight: 500;
   border-bottom: 2px solid transparent;
-  color: #6b7280;
+  color: #647b78;
   cursor: pointer;
   background: transparent;
 }
-.modal-tab-btn.active { color: #7c3aed; border-bottom-color: #7c3aed; }
-.modal-tab-btn:hover:not(.active) { color: #1f2937; border-bottom-color: #d1d5db; }
+.modal-tab-btn.active { color: #0f766e; border-bottom-color: #0f766e; }
+.modal-tab-btn:hover:not(.active) { color: #163b3a; border-bottom-color: #d1d5db; }
 .modal-tab-panel { display: none; }
 .modal-tab-panel.active { display: block; animation: pmFadeIn 0.25s ease; }
 
@@ -299,12 +299,12 @@
   flex-wrap: wrap;
   gap: 10px;
   padding: 12px 20px;
-  border-top: 1px solid #f1f5f9;
-  background: #fafbfc;
+  border-top: 1px solid #e6f4f1;
+  background: #f0fbf8;
 }
 .pagination-info {
   font-size: 11.5px;
-  color: #6b7280;
+  color: #647b78;
   font-weight: 500;
 }
 .pagination-controls {
@@ -313,9 +313,9 @@
   gap: 8px;
 }
 .pagination-size-select {
-  border: 1px solid #7c3aed;
+  border: 1px solid #0f766e;
   background: #fff;
-  color: #374151;
+  color: #163b3a;
   font-size: 11.5px;
   font-weight: 600;
   border-radius: 8px;
@@ -326,13 +326,13 @@
 }
 .pagination-size-select:hover { border-color: #d1d5db; }
 .pagination-size-select:focus {
-  border-color: #7c3aed;
-  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15);
+  border-color: #0f766e;
+  box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.15);
 }
 .pagination-page-label {
   font-size: 11.5px;
   font-weight: 600;
-  color: #374151;
+  color: #163b3a;
   white-space: nowrap;
   padding: 0 4px;
 }
@@ -340,16 +340,16 @@
   width: 28px;
   height: 28px;
   border-radius: 7px;
-  border: 1px solid #e5e7eb;
+  border: 1px solid #d6eae6;
   background: #fff;
-  color: #4b5563;
+  color: #647b78;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   transition: all 0.15s ease;
 }
-.pagination-btn:hover:not(:disabled) { background: #f5f3ff; color: #6d28d9; border-color: #ddd6fe; }
+.pagination-btn:hover:not(:disabled) { background: #e6f4f1; color: #0d6b60; border-color: #d6eae6; }
 .pagination-btn:disabled { opacity: 0.4; cursor: not-allowed; }
 
 /* ---------- Empty state ---------- */
@@ -371,6 +371,14 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  color: #9ca3af;
+  color: #94a3a0;
   margin-bottom: 6px;
 }
+
+/* ---------- CRM teal palette: page + Tailwind utility overrides ---------- */
+body.crm-page { background: #f0fbf8; color: #163b3a; }
+body.crm-page .text-gray-900, body.crm-page .text-gray-800, body.crm-page .text-gray-700 { color: #163b3a; }
+body.crm-page .text-gray-600, body.crm-page .text-gray-500 { color: #647b78; }
+body.crm-page .text-gray-400 { color: #94a3a0; }
+body.crm-page .border-gray-100, body.crm-page .border-gray-200, body.crm-page .border-gray-300 { border-color: #d6eae6; }
+body.crm-page .bg-gray-50 { background-color: #f0fbf8; }
